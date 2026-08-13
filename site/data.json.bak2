@@ -1,0 +1,288 @@
+[
+  {
+    "date": "2026-08-12",
+    "topIssues": [
+      "KOSPI 6,438.5 출발(+1.47%) 후 장중 6,480선 회복 — 외국인·기관 쌍끌이. 반면 KOSDAQ은 1%대 하락으로 지수 역행 종목 선별이 관건.",
+      "K뷰티 ODM 3사가 2Q 사상 최대 실적 동반 발표 — 한국콜마 +28.17%, 코스메카코리아 +23.58%, 코스맥스 +22.38%.",
+      "한국콜마 2Q 영업익 1,103억원(YoY +50.2%)으로 분기 첫 1,000억 돌파, 거래량은 5일 평균의 5배.",
+      "일진전기 상반기 매출 1.14조·영업익 1,227억 역대 최대(2Q 영익 +91%) — 전선·전력기기 섹터 동반 강세로 확산.",
+      "펄어비스, 2Q 영업익 급증에도 연간 매출 가이던스 하향(붉은사막 ASP·매출 이연)으로 -13.96%.",
+      {
+        "text": "On Holding(ONON) 8/11 -20.29%로 사상 최악의 단일 거래일, 거래량은 3개월 평균 대비 +604%.",
+        "sourceUrl": "https://www.tradingview.com/news/stocktwits:f9ca57bb5094b:0-onon-stock-plunges-to-2-year-lows-in-record-single-day-crash-after-guidance-cut-revenue-miss/",
+        "sourceTitle": "TradingView — ONON Stock Plunges To 2-Year Lows In Record Single-Day Crash"
+      },
+      {
+        "text": "Alphabet(GOOGL) 8/11 -3.84%로 대형주 중 최대 낙폭. AI 캐펙스 $2,050억 상향·DeepMind 인력 이탈·DOJ 분할 검토가 겹침.",
+        "sourceUrl": "https://finance.yahoo.com/technology/ai/articles/alphabet-shares-fall-google-unveils-123214920.html",
+        "sourceTitle": "Yahoo Finance — Alphabet Shares Fall After Google Unveils $205 Billion AI Spending Plan"
+      },
+      "CoreWeave(CRWV) Q2 매출 $25.8억(+112%)·가이던스 상향·수주잔고 $1,040억, 시간외 +13% — 국내 장중에 반영될 최신 촉매.",
+      "원/달러 7/2 1,554.4원 → 8/12 1,415.0원, 6주간 -8.97% 원화 강세. YoY 격차도 +11%대 → +1.77%로 소멸(양측 교차 검증 완료).",
+      {
+        "text": "미국 7월 CPI가 KST 8/12 21:30 발표. 근원 MoM 0.3% 이상이면 성장주 전반 재평가, 국내도 익일 변동성 확대 요인.",
+        "sourceUrl": "https://www.benzinga.com/trading-ideas/movers/26/08/61118609/sp500-eyes-record-highs-september-fed-hike-odds-cpi-preview",
+        "sourceTitle": "Benzinga — S&P 500 Eyes Records, Fed Hike Odds Near 51% Before CPI"
+      }
+    ],
+    "up": [
+      {
+        "name": "한국콜마",
+        "ticker": "161890",
+        "market": "KOSPI",
+        "reason": "2Q 영업익 1,103억(YoY +50.2%) 분기 첫 1,000억 돌파, 당일 +28.17%·거래량 5일 평균 5배",
+        "priceAtPrediction": 138300,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      },
+      {
+        "name": "CoreWeave",
+        "ticker": "CRWV",
+        "market": "US",
+        "reason": "Q2 매출 $25.8억(+112%) 컨센 상회, FY26 가이던스 $124~132억 상향, 수주잔고 $1,040억, 시간외 +13%",
+        "priceAtPrediction": 90.32,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null,
+        "settlementExcluded": true,
+        "settlementNote": "정산 제외: 시간외 급등(+13%) 이후 예측이라 기준가 왜곡"
+      },
+      {
+        "name": "코스맥스",
+        "ticker": "192820",
+        "market": "KOSPI",
+        "reason": "2Q 사상 최대 — 국내 분기 최초 매출 5,000억, 美 법인 첫 흑자, 중국 +32.9%. 5일 연속 상승",
+        "priceAtPrediction": 257000,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      },
+      {
+        "name": "Palantir Technologies",
+        "ticker": "PLTR",
+        "market": "US",
+        "reason": "Q2 매출·EPS 컨센 상회, FY26 가이던스 $76.6억 → $81.6억 상향, 8/10 +4.1%",
+        "priceAtPrediction": 174.94,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      },
+      {
+        "name": "일진전기",
+        "ticker": "103590",
+        "market": "KOSPI",
+        "reason": "상반기 역대 최대(2Q 영익 +91%), 저평가 전력기기 평가 + AI 데이터센터 초고압 케이블 수주",
+        "priceAtPrediction": 72600,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      },
+      {
+        "name": "NHN",
+        "ticker": "181710",
+        "market": "KOSPI",
+        "reason": "2Q 역대 최대 분기·전 부문 흑자, NH투자·메리츠 목표주가 동시 상향(70,000/64,000원)",
+        "priceAtPrediction": 59100,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      },
+      {
+        "name": "코스메카코리아",
+        "ticker": "241710",
+        "market": "KOSDAQ",
+        "reason": "2Q 사상 최대 실적 + 수출 증가, 2거래일 연속 대량 급등하며 코스닥 약세에 역행",
+        "priceAtPrediction": 135200,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      },
+      {
+        "name": "코오롱글로벌",
+        "ticker": "003070",
+        "market": "KOSPI",
+        "reason": "2Q 영업익 +173.6% 턴어라운드, 용인 반도체 용수공급 1,265억 수주, 거래량 26배 폭증",
+        "priceAtPrediction": 10440,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      },
+      {
+        "name": "금호건설",
+        "ticker": "002990",
+        "market": "KOSPI",
+        "reason": "SH 장지차고지 3,506억 수주 + 호남 반도체 클러스터 2029년 팹 완공 목표 발표",
+        "priceAtPrediction": 13990,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      },
+      {
+        "name": "Akamai Technologies",
+        "ticker": "AKAM",
+        "market": "US",
+        "reason": "UBS 의견 상향 + 목표주가 $125 → $143(+14%), 8/10 +7.5% 반응. 다만 8/11은 -0.83%로 되돌림 — 가격 신호는 하루 지난 자료",
+        "priceAtPrediction": 116.67,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      }
+    ],
+    "down": [
+      {
+        "name": "On Holding",
+        "ticker": "ONON",
+        "market": "US",
+        "reason": "매출 컨센 하회 + FY26 가이던스 하향, 8/11 -20.29%·거래량 +604%",
+        "sourceUrl": "https://www.tradingview.com/news/stocktwits:f9ca57bb5094b:0-onon-stock-plunges-to-2-year-lows-in-record-single-day-crash-after-guidance-cut-revenue-miss/",
+        "sourceTitle": "TradingView — ONON Stock Plunges To 2-Year Lows In Record Single-Day Crash",
+        "priceAtPrediction": 30.91,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      },
+      {
+        "name": "펄어비스",
+        "ticker": "263750",
+        "market": "KOSDAQ",
+        "reason": "2Q 호실적에도 연간 매출 가이던스 하향, 당일 -13.96%·거래량 전일 2.3배",
+        "priceAtPrediction": 31750,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      },
+      {
+        "name": "Alphabet",
+        "ticker": "GOOGL",
+        "market": "US",
+        "reason": "AI 캐펙스 상향·DeepMind 인력 이탈·DOJ 분할 검토 3중 악재, 8/11 -3.84%로 대형주 중 최대 낙폭",
+        "sourceUrl": "https://finance.yahoo.com/technology/ai/articles/alphabet-shares-fall-google-unveils-123214920.html",
+        "sourceTitle": "Yahoo Finance — Alphabet Shares Fall After Google Unveils $205 Billion AI Spending Plan",
+        "priceAtPrediction": 343.8,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      },
+      {
+        "name": "엔켐",
+        "ticker": "348370",
+        "market": "KOSDAQ",
+        "reason": "2,380억 상환 3년 유예 요청 + 담보계약 정정공시, 미국법인 매출 -26%·순손실 전환",
+        "priceAtPrediction": 23750,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      },
+      {
+        "name": "Intel",
+        "ticker": "INTC",
+        "market": "US",
+        "reason": "증자 $150억 → $200억 확대에 따른 지분 희석 우려(8/10 -4.6%). 다만 8/11은 +0.19%로 반등해 '이틀 연속 하락' 서술은 성립하지 않음 — 근거는 증자 확대 단일 신호로 축소",
+        "priceAtPrediction": 97.71,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      },
+      {
+        "name": "딜리셔스",
+        "ticker": "483350",
+        "market": "KOSDAQ",
+        "reason": "상장 첫날 공모가 7,000원 대비 -16%, 거래량 코스닥 1위인데 방향은 매도",
+        "priceAtPrediction": 5850,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      },
+      {
+        "name": "신세계",
+        "ticker": "004170",
+        "market": "KOSPI",
+        "reason": "2Q 영업익 +121.8% 서프라이즈에도 목표가 줄하향, 자금이 화장품·전선으로 순환 이동",
+        "priceAtPrediction": 401000,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      },
+      {
+        "name": "그래피",
+        "ticker": "318060",
+        "market": "KOSDAQ",
+        "reason": "투자주의 지정(3일 변동률 21.26%) + CPS 리픽싱 희석 우려 + 제한적 현금 여력 — 지정 기간이 공시에 없어 8/13 해제 추정, 유효기간 주의",
+        "priceAtPrediction": 20250,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      },
+      {
+        "name": "SM C&C",
+        "ticker": "048550",
+        "market": "KOSDAQ",
+        "reason": "소수계좌 거래집중 투자주의 지정(8/12 하루, 8/13 해제 예정), 5거래일 연속 하락·거래량 감소로 매수 주체 부재",
+        "priceAtPrediction": 1298,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      },
+      {
+        "name": "United Airlines",
+        "ticker": "UAL",
+        "market": "US",
+        "reason": "연료비 추정 +$60억으로 그룹 내 부담 최대. 7/8 유가 급등 당시 -4% 반응 이력이 있으나, 8/11 유가 재상승일에는 +2.06%로 역행(DAL +1.35%, JBLU +3.01%도 동반 상승) — '유가↑ → 항공주↓' 연결이 최근 세션에서 작동하지 않아 신뢰도 낮음",
+        "sourceUrl": "https://finance.yahoo.com/markets/stocks/articles/airline-stocks-sell-off-jet-184729977.html",
+        "sourceTitle": "Yahoo Finance — Airline Stocks Sell Off on Jet Fuel Prices",
+        "priceAtPrediction": 126.31,
+        "closePrice": null,
+        "changePct": null,
+        "hit": null
+      }
+    ],
+    "institutionalTop3": [
+      {
+        "name": "한화솔루션 (009830)",
+        "netBuy": "약 324.6억원",
+        "weekReturn": "+35.63%",
+        "note": "KOSPI 순매수 4위 규모. 금일 36,500원(+0.41%)"
+      },
+      {
+        "name": "한솔아이원스 (114810)",
+        "netBuy": "약 31.7억원",
+        "weekReturn": "+34.18%",
+        "note": "KOSDAQ 순매수 13위. 금일 12,310원(+0.82%)"
+      },
+      {
+        "name": "제주반도체 (080220)",
+        "netBuy": "약 175.9억원",
+        "weekReturn": "+29.14%",
+        "note": "KOSDAQ 순매수 1위이나 금일 -4.31% — 수급과 주가 방향 엇갈림"
+      }
+    ],
+    "notes": [
+      "상관관계 경고 ① 상승 후보의 한국콜마·코스맥스·코스메카코리아는 'K뷰티 2Q 실적 + 수출'이라는 동일 재료에 연동된다. 차순위 실리콘투·달바글로벌까지 5종목이 같은 테마여서 분산 효과가 없고, 테마 되돌림 시 동반 하락 위험이 있다.",
+      "상관관계 경고 ② 차순위 XOM·CVX(에너지)와 하락 후보 UAL, 차순위 DAL·JBLU(항공)는 '호르무즈 폐쇄 → 유가 급등'이라는 단일 변수의 양면이다. 협상 타결 시 신호가 동시에 역전된다. 방산 NOC·RTX·LMT도 지정학 프리미엄 하나에 묶여 있다. 다만 8/11 실제 데이터에서는 이 대칭이 확인되지 않았다 — 유가가 재상승한 8/11에 항공 3종목이 모두 올랐다(UAL +2.06%, DAL +1.35%, JBLU +3.01%). 경고 자체는 유효하나, '유가 상승 → 항공주 하락' 연결이 최근 세션에서 작동하지 않았다는 단서가 붙어야 한다.",
+      "상관관계 경고 ③ 하락 후보 SM C&C·그래피와 차순위 아이크래프트는 '거래소 투자주의 1일 지정'이라는 단일 변수다. SM C&C·아이크래프트는 공시에 8/12 하루로 명시돼 8/13 해제 예정이고, 그래피는 기간이 공시에 없어 통상 1일로 추정할 뿐이다. 즉 이 3개의 하락 논리는 유효기간이 오늘 하루다.",
+      "핀텔(차순위)은 위 3개와 같은 묶음이 아니다 — 1일 지정이 아니라 투자경고 '지정예고'로 신용거래 제한·위탁증거금 100%를 수반하고 해제 시점이 미정이며, 시총 미달 관리종목 명단에도 포함돼 지속 악재가 별도로 있다.",
+      "종합하면 후보와 차순위를 합쳐 8개 종목이 단 2개 변수(호르무즈 유가 5개 / 거래소 1일 지정 3개)에 걸려 있다. 두 묶음은 성격이 다르다 — 거래소 지정은 해제일이 8/13로 사실상 정해져 있고, 유가 5개는 호르무즈 협상에 달려 해제 시점이 없다.",
+      "차순위 First Solar(FSLR)는 정책 수혜 신호가 있으나 8/6 종가 $244.14 → 시간외 $263.00 → 8/10 종가 $239.33으로 급등분을 2거래일 만에 반납하고 발표 당일 종가마저 밑돌아 상위 후보에서 제외했다(웰스파고 목표가 $313은 컨센 $267.97을 크게 웃도는 상단 견해).",
+      "환율 단서 — K뷰티 ODM 3사의 2Q 사상 최대 실적은 원/달러 1,500원대 구간에서 만들어진 숫자다. 1,415원이 유지되면 하반기 환산 기여분은 축소되므로, 확정된 2Q 실적의 설명 요인으로는 유효하나 3Q 이후 전망 근거로는 약하다. 다만 본 상승 후보 중 환율을 채택 근거로 쓴 종목은 없다(전부 실적·수주·시세·수급).",
+      "국내 상승 후보 다수가 당일 이미 +8~28% 급등한 모멘텀 지속 후보다. 진입 시점에 따라 되돌림 위험이 크게 달라진다.",
+      "상충 신호로 보류한 종목 — 경동나비엔(-13.51%인데 2Q 영익 +64.6%·목표가 상향), 심텍(-9.31% vs AI 서버 관심주 제시 — 국내·해외 분석가가 상호 확인했으나 개별 실적 이슈인지 섹터 파급 불균일인지 구분할 데이터가 없어 어느 방향으로도 단정 불가),OCI홀딩스(美 폴리실리콘 최저수입가격제 호재 vs 급락 — -7.13%는 직전 거래일 273,500원 대비이고 8/10 고점 284,500원 대비로는 -10.72%), 엘앤씨바이오(-11.34% vs 메가카티 긍정 논문), 롯데렌탈(TPG 1조3,100억 매각계약이나 해석 양방향).",
+      "후보에서 제외한 종목 — LG전자(+10.90%이나 고점 경계론·대형주 순매도), 금호전기(2거래일 연속 상한가이나 실적 근거 없는 정책 테마 과열), 시프트업(매출 -50.4% vs 투자의견 BUY 상향).",
+      "데이터 한계 — 증권사 리포트 원문 0건(daishin 미러가 사내 보안 영역으로 이전, 최신 날짜도 2026-06-04로 정체)이라 뉴스 인용 목표주가·투자의견으로 대체했다. KRX trade-info는 502/429 반복으로 실패해 네이버 금융 공개 표면으로 대체했다. 해외는 CNBC·TheStreet 403으로 검색 요약본을 사용했고 거래량은 ONON 외 미확보다.",
+      "기준 시각 — 국내 2026-08-12 10:05~10:10 KST 장중 잠정치(종가 아님), 해외 2026-08-11 미국 정규장 종가, 환율 2026-08-12 1,415.0원(ECOS 최신 확정치, 양측 교차검증 완료).",
+      "정산 범위 — 20건 전부 기준가가 확보됐고 null은 0건이다. 다만 CRWV 1건은 기준가 $90.32가 촉매(8/11 장마감 후 실적 발표·시간외 +13%) 발생 이전 가격이라, 시간외 종가를 확보하기 전까지 정산에서 제외한다. 그대로 정산하면 이미 실현된 +13%가 적중으로 계상돼 적중률이 부풀려진다. 현재 정산 가능 종목은 19건이다.",
+      "사후 자기점검에서 드러난 근거 시점 오류(수정 완료) — INTC는 8/11 +0.19%로 '이틀 연속 하락'이 성립하지 않아 증자 확대 단일 신호로 축소했고, UAL은 근거로 쓴 -4%가 7/8자 수치이며 8/11 유가 재상승일에는 오히려 +2.06%(DAL +1.35%, JBLU +3.01%)로 역행해 신뢰도를 낮췄다. AKAM의 +7.5%는 8/10 수치이고 8/11은 -0.83%였다. GOOGL은 실제 -3.84%로 정정했다. 원인은 뉴스 요약본의 등락률을 날짜 검증 없이 채택한 것이다."
+    ],
+    "priceBasis": "기준가(priceAtPrediction) 정의 — '촉매 반영 후, 예측 시점에 마지막으로 거래된 가격'. 국내 13건은 2026-08-12 10:05~10:10 KST 장중 체결가(전일 종가 아님). 해외 7건은 2026-08-11 미국 정규장 종가(USD, 출처 stockanalysis.com)이며, 미국 장 마감 후 예측 시점까지 추가 거래가 없었으므로 6종목(PLTR·AKAM·ONON·GOOGL·INTC·UAL)에서는 이 값이 곧 '예측 시점 마지막 체결가'로 정의와 일치한다. 예외는 CRWV 하나다 — 채택 근거인 실적 발표와 시간외 +13%가 이 종가 이후에 발생해, $90.32는 촉매 반영 전 가격이다. 따라서 CRWV는 시간외 종가를 확보하기 전까지 정산 대상에서 제외한다(그대로 정산하면 이미 실현된 +13%가 적중으로 계상되어 적중률이 부풀려진다). 이 정의는 회차 간 적중률 비교를 위해 국내·해외에 동일 적용한다.",
+    "disclaimer": "투자 자문이 아닌 참고용 스크리닝입니다. 매수·매도 권유가 아닙니다.",
+    "verified": {
+      "domestic": false,
+      "overseas": false
+    },
+    "accuracy": {
+      "up": null,
+      "down": null,
+      "overall": null
+    }
+  }
+]
