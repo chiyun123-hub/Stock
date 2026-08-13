@@ -1,0 +1,16 @@
+# API Key 및 환경 변수 파일
+.env
+*.json
+config.secret.yaml
+
+# 데이터 및 데이터베이스 (용량이 크거나 개인 데이터)
+*.csv
+*.db
+*.sqlite3
+data/
+
+# Python / Claude Code 캐시 및 가상환경
+__pycache__/
+.venv/
+venv/
+.claude/
