@@ -47,6 +47,10 @@ def render_issues(headlines: list[str]) -> str:
     return f'<ul class="issue-list">{items}</ul>'
 
 
+def safe_name(ticker: str) -> str:
+    return ticker.replace(".", "_").lower()
+
+
 def render_rows(items: list[dict]) -> str:
     if not items:
         return '<div class="stock-reason">데이터 없음</div>'
@@ -56,15 +60,16 @@ def render_rows(items: list[dict]) -> str:
         market = item.get("market", "US")
         currency = item.get("currency", "$")
         label = f'{item["ticker"]}{f" · {name}" if name else ""}'
+        href = f"stocks/{safe_name(item['ticker'])}.html"
         rows.append(
-            '<div class="stock-row">'
+            f'<a class="stock-row" href="{href}">'
             '<div class="stock-main">'
             f'<div class="stock-ticker"><span class="rank">{i}</span>{label}'
             f'<span class="market-badge">{market}</span></div>'
             f'<div class="stock-reason">{item.get("reasoning", "")}</div>'
             "</div>"
             f'<div class="stock-price">{currency}{item.get("latest_close", 0):,.2f}</div>'
-            "</div>"
+            "</a>"
         )
     return "\n".join(rows)
 
@@ -74,8 +79,10 @@ def render(prediction: dict, stats: dict, universe: dict) -> str:
         template = f.read()
 
     is_up = prediction["decision"] == "UP"
+    ticker_href = f"stocks/{safe_name(prediction['ticker'])}.html"
     replacements = {
         "{{TICKER}}": prediction["ticker"],
+        "{{TICKER_HREF}}": ticker_href,
         "{{DECISION}}": prediction["decision"],
         "{{DECISION_CLASS}}": "up" if is_up else "down",
         "{{ARROW}}": "▲" if is_up else "▼",
