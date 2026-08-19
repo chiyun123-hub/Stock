@@ -10,7 +10,7 @@ OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "index.html")
 
 
 def load_prediction(path: str = "data/prediction_today.json") -> dict:
-    with open(path) as f:
+    with open(path, encoding="utf-8") as f:
         return json.load(f)
 
 

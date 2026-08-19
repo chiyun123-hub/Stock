@@ -13,7 +13,7 @@ from supabase import create_client
 
 
 def load_latest_prediction(path: str = "data/prediction_today.json") -> dict:
-    with open(path) as f:
+    with open(path, encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -57,7 +57,7 @@ def sync_universe(path: str = "data/predictions_universe.json") -> int:
     if client is None:
         return 0
 
-    with open(path) as f:
+    with open(path, encoding="utf-8") as f:
         universe = json.load(f)
 
     today = date.today().isoformat()

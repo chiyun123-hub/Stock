@@ -79,8 +79,8 @@ def call_gemini(prompt: str) -> dict:
 
 def save_prediction(result: dict, path: str = "data/prediction_today.json") -> None:
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
-    with open(path, "w") as f:
-        json.dump(result, f, indent=2)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(result, f, indent=2, ensure_ascii=False)
 
 
 def predict(ticker: str = "AAPL", data_path: str = "data/aapl_5y.csv") -> dict:
