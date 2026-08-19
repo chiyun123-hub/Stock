@@ -1,1 +1,7 @@
 claude.exe
+.certs/
+.env
+data/
+__pycache__/
+*.pyc
+Untitled query*

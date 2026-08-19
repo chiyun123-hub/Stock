@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Stock Prediction Dashboard</title>
+<style>
+  :root {
+    --bg: #0b0f14;
+    --card: #131a22;
+    --border: #232b35;
+    --text: #e8edf2;
+    --muted: #8b98a5;
+    --up: #22c55e;
+    --down: #ef4444;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #16202b, var(--bg));
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", Pretendard, sans-serif;
+    padding: 40px 20px 60px;
+  }
+  .page { max-width: 960px; margin: 0 auto; }
+
+  .card {
+    max-width: 420px;
+    margin: 0 auto 48px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .ticker-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .ticker { font-size: 28px; font-weight: 700; letter-spacing: 0.5px; }
+  .date { color: var(--muted); font-size: 13px; }
+  .decision-badge {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    padding: 28px 0; border-radius: 16px; margin-bottom: 24px; font-size: 40px; font-weight: 800;
+  }
+  .decision-badge.up   { background: rgba(34,197,94,0.12); color: var(--up); }
+  .decision-badge.down { background: rgba(239,68,68,0.12); color: var(--down); }
+  .reasoning {
+    color: var(--text); font-size: 14px; line-height: 1.6;
+    background: #0e141b; border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px 16px; margin-bottom: 24px;
+  }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .stat { background: #0e141b; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+  .stat-label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-value { font-size: 16px; font-weight: 600; margin-top: 4px; }
+  .disclaimer { font-size: 11px; color: var(--muted); text-align: center; line-height: 1.5; }
+
+  .section-title {
+    font-size: 20px; font-weight: 700; margin: 0 0 16px; text-align: center;
+  }
+  .universe {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 40px;
+  }
+  @media (max-width: 720px) { .universe { grid-template-columns: 1fr; } }
+  .col-title {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 16px; font-weight: 700; margin-bottom: 12px; padding: 0 4px;
+  }
+  .col-title.up   { color: var(--up); }
+  .col-title.down { color: var(--down); }
+  .stock-row {
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 10px;
+  }
+  .stock-main { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+  .stock-ticker { font-weight: 700; font-size: 15px; }
+  .stock-reason { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .stock-price { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
+  .rank { color: var(--muted); font-size: 12px; margin-right: 8px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="card">
+    <div class="ticker-row">
+      <div class="ticker">AAPL</div>
+      <div class="date">2026-08-19</div>
+    </div>
+
+    <div class="decision-badge down">
+      <span>▼</span>
+      <span>DOWN</span>
+    </div>
+
+    <div class="reasoning">The stock is in a short-term correction, trading below its 20-day simple moving average with a negative 5-day return.</div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">Latest Close</div>
+        <div class="stat-value">$305.93</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">SMA 20</div>
+        <div class="stat-value">$318.22</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">5D Change</div>
+        <div class="stat-value">-2.28%</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">5Y Range</div>
+        <div class="stat-value">$122.83 - 339.79</div>
+      </div>
+    </div>
+
+    <div class="disclaimer">이 예측은 AI가 과거 데이터를 기반으로 생성한 참고용 정보이며,<br>투자 자문이 아닙니다.</div>
+  </div>
+
+  <div class="section-title">대형주 20종목 스크리닝</div>
+  <div class="universe">
+    <div class="col">
+      <div class="col-title up">▲ UP (10)</div>
+      <div class="stock-row"><div class="stock-main"><div class="stock-ticker"><span class="rank">1</span>MSFT</div><div class="stock-reason">Despite the recent 5-day pullback, the stock remains comfortably above its 20-day simple moving average, indicating the broader upward trend is still intact.</div></div><div class="stock-price">$481.63</div></div>
+<div class="stock-row"><div class="stock-main"><div class="stock-ticker"><span class="rank">2</span>AMZN</div><div class="stock-reason">Although the 5-day change is negative, the price remains above its 20-day simple moving average, indicating a continuation of the broader upward trend within its 5-year range.</div></div><div class="stock-price">$259.45</div></div>
+<div class="stock-row"><div class="stock-main"><div class="stock-ticker"><span class="rank">3</span>NVDA</div><div class="stock-reason">NVDA is trading above its 20-day simple moving average and has posted a positive 5-day change, indicating short-term upward momentum.</div></div><div class="stock-price">$219.74</div></div>
+<div class="stock-row"><div class="stock-main"><div class="stock-ticker"><span class="rank">4</span>TSLA</div><div class="stock-reason">The stock is trading above its 20-day simple moving average with a positive 5-day change, indicating near-term bullish momentum.</div></div><div class="stock-price">$336.87</div></div>
+<div class="stock-row"><div class="stock-main"><div class="stock-ticker"><span class="rank">5</span>JPM</div><div class="stock-reason">JPM is maintaining a positive momentum with the current price trading above its 20-day simple moving average and showing a recent gain.</div></div><div class="stock-price">$363.25</div></div>
+<div class="stock-row"><div class="stock-main"><div class="stock-ticker"><span class="rank">6</span>V</div><div class="stock-reason">The stock is trading above its 20-day simple moving average and has shown positive momentum over the past five days.</div></div><div class="stock-price">$364.25</div></div>
+<div class="stock-row"><div class="stock-main"><div class="stock-ticker"><span class="rank">7</span>WMT</div><div class="stock-reason">The stock is trading above its 20-day simple moving average and has posted a positive 5-day change.</div></div><div class="stock-price">$115.20</div></div>
+<div class="stock-row"><div class="stock-main"><div class="stock-ticker"><span class="rank">8</span>XOM</div><div class="stock-reason">The stock is maintaining strong upward momentum with the price trading well above its 20-day simple moving average and showing a solid 5-day gain.</div></div><div class="stock-price">$165.56</div></div>
+<div class="stock-row"><div class="stock-main"><div class="stock-ticker"><span class="rank">9</span>JNJ</div><div class="stock-reason">The stock is trading above its 20-day moving average and recently hit a new 5-year high alongside strong 5-day momentum.</div></div><div class="stock-price">$271.11</div></div>
+<div class="stock-row"><div class="stock-main"><div class="stock-ticker"><span class="rank">10</span>MA</div><div class="stock-reason">The stock is in an upward trend as the latest price of 574.31 is comfortably above its 20-day simple moving average supported by a positive 5-day change of 2.29%.</div></div><div class="stock-price">$574.31</div></div>
+    </div>
+    <div class="col">
+      <div class="col-title down">▼ DOWN (6)</div>
+      <div class="stock-row"><div class="stock-main"><div class="stock-ticker"><span class="rank">1</span>AAPL</div><div class="stock-reason">Although the 5-day change is positive, the stock price remains below its 20-day simple moving average, indicating ongoing short-term weakness.</div></div><div class="stock-price">$310.03</div></div>
+<div class="stock-row"><div class="stock-main"><div class="stock-ticker"><span class="rank">2</span>GOOGL</div><div class="stock-reason">The stock price is currently trading below its 20-day simple moving average, indicating short-term downward pressure.</div></div><div class="stock-price">$344.20</div></div>
+<div class="stock-row"><div class="stock-main"><div class="stock-ticker"><span class="rank">3</span>META</div><div class="stock-reason">The stock is trading significantly below its 20-day simple moving average with a sharp 5-day decline of over nine percent.</div></div><div class="stock-price">$543.67</div></div>
+<div class="stock-row"><div class="stock-main"><div class="stock-ticker"><span class="rank">4</span>UNH</div><div class="stock-reason">The stock price is below its 20-day simple moving average and has experienced a negative 5-day price change.</div></div><div class="stock-price">$393.93</div></div>
+<div class="stock-row"><div class="stock-main"><div class="stock-ticker"><span class="rank">5</span>PG</div><div class="stock-reason">The stock price is currently trading below its 20-day simple moving average and has experienced a negative 5-day return.</div></div><div class="stock-price">$143.45</div></div>
+<div class="stock-row"><div class="stock-main"><div class="stock-ticker"><span class="rank">6</span>HD</div><div class="stock-reason">The stock is trading below its 20-day simple moving average and has experienced a notable 5-day decline of 4.79%.</div></div><div class="stock-price">$337.49</div></div>
+    </div>
+  </div>
+
+  <div class="disclaimer">스크리닝 결과는 20일 이동평균·최근 5일 수익률 기반 추세 판단이며, 투자 자문이 아닙니다.</div>
+
+</div>
+</body>
+</html>

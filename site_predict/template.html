@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>주식 예측 대시보드</title>
+<style>
+  :root {
+    --bg: #0b0f14;
+    --card: #131a22;
+    --border: #232b35;
+    --text: #e8edf2;
+    --muted: #8b98a5;
+    --up: #22c55e;
+    --down: #ef4444;
+    --accent: #3b82f6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", "Malgun Gothic", Pretendard, sans-serif;
+  }
+  .layout { display: flex; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    background: #0e141b;
+    border-right: 1px solid var(--border);
+    padding: 28px 20px;
+  }
+  .brand { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .brand-sub { font-size: 12px; color: var(--muted); margin-bottom: 28px; }
+  .sidebar-title {
+    font-size: 13px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;
+  }
+  .issue-list { list-style: none; margin: 0 0 32px; padding: 0; }
+  .issue-item {
+    font-size: 13px; line-height: 1.5; padding: 10px 0;
+    border-bottom: 1px solid var(--border); color: var(--text);
+  }
+  .issue-empty { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .sidebar-stat { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+  .sidebar-stat-label { font-size: 11px; color: var(--muted); }
+  .sidebar-stat-value { font-size: 15px; font-weight: 700; margin-top: 2px; }
+
+  /* Main */
+  .main { flex: 1; padding: 40px 32px 60px; max-width: 900px; }
+
+  .card {
+    max-width: 420px;
+    margin: 0 0 44px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .ticker-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .ticker { font-size: 28px; font-weight: 700; letter-spacing: 0.5px; }
+  .date { color: var(--muted); font-size: 13px; }
+  .decision-badge {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    padding: 28px 0; border-radius: 16px; margin-bottom: 24px; font-size: 40px; font-weight: 800;
+  }
+  .decision-badge.up   { background: rgba(34,197,94,0.12); color: var(--up); }
+  .decision-badge.down { background: rgba(239,68,68,0.12); color: var(--down); }
+  .reasoning {
+    color: var(--text); font-size: 14px; line-height: 1.6;
+    background: #0e141b; border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px 16px; margin-bottom: 24px;
+  }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .stat { background: #0e141b; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+  .stat-label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-value { font-size: 16px; font-weight: 600; margin-top: 4px; }
+  .disclaimer { font-size: 11px; color: var(--muted); text-align: center; line-height: 1.5; }
+
+  .section-title { font-size: 20px; font-weight: 700; margin: 0 0 16px; }
+  .universe { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 40px; }
+  @media (max-width: 720px) { .universe { grid-template-columns: 1fr; } .layout { flex-direction: column; } .sidebar { width: 100%; } }
+  .col-title { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; margin-bottom: 12px; padding: 0 4px; }
+  .col-title.up   { color: var(--up); }
+  .col-title.down { color: var(--down); }
+  .stock-row {
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 10px;
+  }
+  .stock-main { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+  .stock-ticker { font-weight: 700; font-size: 15px; }
+  .stock-ticker .market-badge {
+    font-size: 10px; font-weight: 700; color: var(--muted);
+    border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; margin-left: 6px;
+  }
+  .stock-reason { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .stock-price { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
+  .rank { color: var(--muted); font-size: 12px; margin-right: 8px; }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <div class="sidebar">
+    <div class="brand">📈 주식 예측 대시보드</div>
+    <div class="brand-sub">{{DATE}} 기준 · AI 스크리닝</div>
+
+    <div class="sidebar-title">오늘의 이슈</div>
+    {{ISSUE_LIST}}
+
+    <div class="sidebar-title">요약</div>
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-label">상승 예상</div>
+      <div class="sidebar-stat-value" style="color:var(--up)">{{UP_COUNT}}종목</div>
+    </div>
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-label">하락 예상</div>
+      <div class="sidebar-stat-value" style="color:var(--down)">{{DOWN_COUNT}}종목</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="card">
+      <div class="ticker-row">
+        <div class="ticker">{{TICKER}}</div>
+        <div class="date">{{DATE}}</div>
+      </div>
+
+      <div class="decision-badge {{DECISION_CLASS}}">
+        <span>{{ARROW}}</span>
+        <span>{{DECISION}}</span>
+      </div>
+
+      <div class="reasoning">{{REASONING}}</div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">최근 종가</div>
+          <div class="stat-value">${{LATEST_CLOSE}}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">20일 이동평균</div>
+          <div class="stat-value">${{SMA_20}}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">5일 변동률</div>
+          <div class="stat-value">{{CHANGE_5D}}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">5년 범위</div>
+          <div class="stat-value">${{RANGE}}</div>
+        </div>
+      </div>
+
+      <div class="disclaimer">이 예측은 AI가 과거 데이터를 기반으로 생성한 참고용 정보이며,<br>투자 자문이 아닙니다.</div>
+    </div>
+
+    <div class="section-title">국내·해외 대형주 20종목 스크리닝</div>
+    <div class="universe">
+      <div class="col">
+        <div class="col-title up">▲ 상승 예상 ({{UP_COUNT}})</div>
+        {{UP_ROWS}}
+      </div>
+      <div class="col">
+        <div class="col-title down">▼ 하락 예상 ({{DOWN_COUNT}})</div>
+        {{DOWN_ROWS}}
+      </div>
+    </div>
+
+    <div class="disclaimer">스크리닝 결과는 20일 이동평균·최근 5일 수익률 기반 추세 판단이며, 투자 자문이 아닙니다.</div>
+  </div>
+
+</div>
+</body>
+</html>
