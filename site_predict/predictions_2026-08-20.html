@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>2026-08-20 종목 예측</title>
+<style>
+
+  :root {
+    --bg: #0b0f14; --card: #131a22; --border: #232b35;
+    --text: #e8edf2; --muted: #8b98a5; --up: #22c55e; --down: #ef4444; --accent: #3b82f6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+    font-family: -apple-system, "Segoe UI", "Malgun Gothic", Pretendard, sans-serif;
+  }
+  .layout { display: flex; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar { width: 280px; flex-shrink: 0; background: #0e141b; border-right: 1px solid var(--border); padding: 28px 20px; }
+  .brand { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .brand-sub { font-size: 12px; color: var(--muted); margin-bottom: 28px; }
+  .sidebar-title { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+  .sidebar-nav { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+  .sidebar-nav-item {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; font-size: 13px; font-weight: 600; color: var(--text);
+    text-decoration: none; transition: border-color 0.15s;
+  }
+  .sidebar-nav-item:hover { border-color: var(--accent); }
+  .sidebar-nav-item.active { border-color: var(--accent); background: #16202e; }
+  .nav-badge { font-size: 11px; font-weight: 700; color: var(--muted); background: #0e141b; border-radius: 10px; padding: 2px 8px; }
+  .sidebar-stat { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+  .sidebar-stat-label { font-size: 11px; color: var(--muted); }
+  .sidebar-stat-value { font-size: 15px; font-weight: 700; margin-top: 2px; }
+  .sidebar-back { display: inline-block; margin-top: 8px; color: var(--muted); text-decoration: none; font-size: 13px; }
+  .sidebar-back:hover { color: var(--text); }
+
+  /* Main */
+  .main { flex: 1; display: flex; justify-content: center; padding: 40px 32px 60px; }
+  .main-inner { width: 100%; max-width: 900px; }
+
+  @media (max-width: 720px) {
+    .layout { flex-direction: column; }
+    .sidebar { width: 100%; }
+  }
+
+
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; }
+  td a { color: var(--text); font-weight: 700; text-decoration: none; }
+  td a:hover { color: var(--accent); }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 11px; }
+  .badge.up { background: rgba(34,197,94,0.15); color: var(--up); }
+  .badge.down { background: rgba(239,68,68,0.15); color: var(--down); }
+  .badge.pending { background: rgba(139,152,165,0.15); color: var(--muted); }
+  .result-ok { color: var(--up); font-weight: 700; }
+  .result-no { color: var(--down); font-weight: 700; }
+  .result-pending { color: var(--muted); }
+  .reason-cell { color: var(--muted); font-size: 12px; max-width: 320px; }
+  .table-wrap { overflow-x: auto; }
+
+</style>
+</head>
+<body>
+<div class="layout">
+  <div class="sidebar">
+    <div class="brand">📈 주식 예측 대시보드</div>
+    <div class="brand-sub">2026-08-20 기준 · AI 스크리닝</div>
+
+    <div class="sidebar-title">메뉴</div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="issues.html">
+        <span>📰 오늘의 이슈</span><span class="nav-badge">20</span>
+      </a>
+      <a class="sidebar-nav-item" href="accuracy.html">
+        <span>🎯 예측 정확도</span><span class="nav-badge">66.7%</span>
+      </a>
+      <a class="sidebar-nav-item active" href="predictions.html">
+        <span>📊 종목 예측</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-title">요약</div>
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-label">상승 예상</div>
+      <div class="sidebar-stat-value" style="color:var(--up)">10종목</div>
+    </div>
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-label">하락 예상</div>
+      <div class="sidebar-stat-value" style="color:var(--down)">3종목</div>
+    </div>
+    <a class="sidebar-back" href="index.html">← 대시보드</a>
+  </div>
+  <div class="main"><div class="main-inner">
+    <h1>📊 2026-08-20 예측</h1>
+    <div class="sub">이날 예측한 13개 종목의 방향과 실제 결과입니다.</div>
+    <div class="table-wrap"><table><thead><tr><th>종목</th><th>예측</th><th>실제</th><th>등락률</th><th>결과</th><th>근거</th></tr></thead><tbody><tr><td><a href="stocks/000660_ks.html">000660.KS</a></td><td><span class="badge up">UP</span></td><td><span class="badge pending">-</span></td><td>-</td><td><span class="result-pending">검증 대기</span></td><td class="reason-cell">최신 종가가 20일 이동평균선 위에 위치하고 있으며 최근 5일간 9% 이상의 강한 상승 흐름을 보이고 있습니다.</td></tr>
+<tr><td><a href="stocks/005930_ks.html">005930.KS</a></td><td><span class="badge up">UP</span></td><td><span class="badge pending">-</span></td><td>-</td><td><span class="result-pending">검증 대기</span></td><td class="reason-cell">현재 주가가 20일 이동평균선 위에 위치하고 최근 5일간 상승세를 보이며 단기적인 상승 모멘텀을 유지하고 있습니다.</td></tr>
+<tr><td><a href="stocks/105560_ks.html">105560.KS</a></td><td><span class="badge down">DOWN</span></td><td><span class="badge pending">-</span></td><td>-</td><td><span class="result-pending">검증 대기</span></td><td class="reason-cell">최근 종가가 20일 단순이동평균선(SMA) 아래에 위치하고 5일간 하락세를 보이고 있기 때문입니다.</td></tr>
+<tr><td><a href="stocks/aapl.html">AAPL</a></td><td><span class="badge up">UP</span></td><td><span class="badge pending">-</span></td><td>-</td><td><span class="result-pending">검증 대기</span></td><td class="reason-cell">현재 주가가 20일 이동평균선 위에 위치하고 있으며, 최근 5일간 4.82% 상승하는 등 단기 상승 흐름을 보이고 있기 때문입니다.</td></tr>
+<tr><td><a href="stocks/amzn.html">AMZN</a></td><td><span class="badge up">UP</span></td><td><span class="badge pending">-</span></td><td>-</td><td><span class="result-pending">검증 대기</span></td><td class="reason-cell">주가가 20일 단순이동평균선(SMA) 위에 위치하며 단기적인 상승 추세를 유지하고 있습니다.</td></tr>
+<tr><td><a href="stocks/googl.html">GOOGL</a></td><td><span class="badge down">DOWN</span></td><td><span class="badge pending">-</span></td><td>-</td><td><span class="result-pending">검증 대기</span></td><td class="reason-cell">현재 주가가 20일 단순이동평균선(SMA) 아래에 위치해 있어 단기적인 하락 압력을 받고 있습니다.</td></tr>
+<tr><td><a href="stocks/jpm.html">JPM</a></td><td><span class="badge up">UP</span></td><td><span class="badge pending">-</span></td><td>-</td><td><span class="result-pending">검증 대기</span></td><td class="reason-cell">현재 주가가 20일 단순이동평균선(SMA) 위에 위치해 있으며 5년 최고가 범위에 근접해 있기 때문입니다.</td></tr>
+<tr><td><a href="stocks/meta.html">META</a></td><td><span class="badge down">DOWN</span></td><td><span class="badge pending">-</span></td><td>-</td><td><span class="result-pending">검증 대기</span></td><td class="reason-cell">최근 주가가 20일 단순이동평균선(SMA) 아래에 위치하고 5일간 하락세를 보이고 있기 때문입니다.</td></tr>
+<tr><td><a href="stocks/msft.html">MSFT</a></td><td><span class="badge up">UP</span></td><td><span class="badge pending">-</span></td><td>-</td><td><span class="result-pending">검증 대기</span></td><td class="reason-cell">최근 5일간 소폭 하락했으나, 주가가 20일 단순이동평균선(SMA) 위에 위치하며 중장기적으로 상승 추세를 유지하고 있습니다.</td></tr>
+<tr><td><a href="stocks/nvda.html">NVDA</a></td><td><span class="badge up">UP</span></td><td><span class="badge pending">-</span></td><td>-</td><td><span class="result-pending">검증 대기</span></td><td class="reason-cell">최근 주가가 20일 이동평균선 위에 위치하며 중단기 상승 추세를 유지하고 있기 때문입니다.</td></tr>
+<tr><td><a href="stocks/tsla.html">TSLA</a></td><td><span class="badge up">UP</span></td><td><span class="badge pending">-</span></td><td>-</td><td><span class="result-pending">검증 대기</span></td><td class="reason-cell">현재 주가가 20일 이동평균선 위에 위치하고 최근 5일간 7% 이상 상승하며 강한 단기 상승세를 보이고 있습니다.</td></tr>
+<tr><td><a href="stocks/v.html">V</a></td><td><span class="badge up">UP</span></td><td><span class="badge pending">-</span></td><td>-</td><td><span class="result-pending">검증 대기</span></td><td class="reason-cell">주가가 20일 이동평균선 위에 위치하고 최근 5일간 상승세를 보이며 단기적인 상승 모멘텀을 유지하고 있습니다.</td></tr>
+<tr><td><a href="stocks/wmt.html">WMT</a></td><td><span class="badge up">UP</span></td><td><span class="badge pending">-</span></td><td>-</td><td><span class="result-pending">검증 대기</span></td><td class="reason-cell">현재 주가가 20일 이동평균선(SMA_20) 위에 위치하여 단기 상승 추세를 유지하고 있기 때문입니다.</td></tr></tbody></table></div>
+  </div></div>
+</div>
+</body>
+</html>

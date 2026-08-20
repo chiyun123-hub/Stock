@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>WMT 예측 상세</title>
 <style>
+
   :root {
     --bg: #0b0f14; --card: #131a22; --border: #232b35;
     --text: #e8edf2; --muted: #8b98a5; --up: #22c55e; --down: #ef4444; --accent: #3b82f6;
@@ -12,14 +13,40 @@
   body {
     margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
     font-family: -apple-system, "Segoe UI", "Malgun Gothic", Pretendard, sans-serif;
-    padding: 40px 20px 60px;
   }
-  .page { max-width: 640px; margin: 0 auto; }
-  .back-link {
-    display: inline-block; margin-bottom: 20px; color: var(--muted);
-    text-decoration: none; font-size: 13px;
+  .layout { display: flex; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar { width: 280px; flex-shrink: 0; background: #0e141b; border-right: 1px solid var(--border); padding: 28px 20px; }
+  .brand { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .brand-sub { font-size: 12px; color: var(--muted); margin-bottom: 28px; }
+  .sidebar-title { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+  .sidebar-nav { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+  .sidebar-nav-item {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; font-size: 13px; font-weight: 600; color: var(--text);
+    text-decoration: none; transition: border-color 0.15s;
   }
-  .back-link:hover { color: var(--text); }
+  .sidebar-nav-item:hover { border-color: var(--accent); }
+  .sidebar-nav-item.active { border-color: var(--accent); background: #16202e; }
+  .nav-badge { font-size: 11px; font-weight: 700; color: var(--muted); background: #0e141b; border-radius: 10px; padding: 2px 8px; }
+  .sidebar-stat { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+  .sidebar-stat-label { font-size: 11px; color: var(--muted); }
+  .sidebar-stat-value { font-size: 15px; font-weight: 700; margin-top: 2px; }
+  .sidebar-back { display: inline-block; margin-top: 8px; color: var(--muted); text-decoration: none; font-size: 13px; }
+  .sidebar-back:hover { color: var(--text); }
+
+  /* Main */
+  .main { flex: 1; display: flex; justify-content: center; padding: 40px 32px 60px; }
+  .main-inner { width: 100%; max-width: 900px; }
+
+  @media (max-width: 720px) {
+    .layout { flex-direction: column; }
+    .sidebar { width: 100%; }
+  }
+
+
   .card {
     background: var(--card); border: 1px solid var(--border); border-radius: 20px;
     padding: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.4); margin-bottom: 24px;
@@ -41,10 +68,7 @@
     font-size: 14px; line-height: 1.6; background: #0e141b; border: 1px solid var(--border);
     border-radius: 12px; padding: 14px 16px; margin-bottom: 20px;
   }
-  .chart-wrap {
-    background: #0e141b; border: 1px solid var(--border); border-radius: 12px;
-    padding: 16px; margin-bottom: 20px;
-  }
+  .chart-wrap { background: #0e141b; border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
   .chart-title { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
   .range-buttons { display: flex; gap: 6px; margin-bottom: 10px; }
   .range-btn {
@@ -72,13 +96,41 @@
   .pct-down { color: var(--down); }
   .stat-value { font-size: 16px; font-weight: 600; margin-top: 4px; }
   .disclaimer { font-size: 11px; color: var(--muted); text-align: center; line-height: 1.5; }
+
 </style>
 </head>
 <body>
-<div class="page">
-  <a class="back-link" href="../index.html">← 대시보드로 돌아가기</a>
+<div class="layout">
+  <div class="sidebar">
+    <div class="brand">📈 주식 예측 대시보드</div>
+    <div class="brand-sub">2026-08-20 기준 · AI 스크리닝</div>
 
-  <div class="card">
+    <div class="sidebar-title">메뉴</div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="../issues.html">
+        <span>📰 오늘의 이슈</span><span class="nav-badge">20</span>
+      </a>
+      <a class="sidebar-nav-item" href="../accuracy.html">
+        <span>🎯 예측 정확도</span><span class="nav-badge">66.7%</span>
+      </a>
+      <a class="sidebar-nav-item" href="../predictions.html">
+        <span>📊 종목 예측</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-title">요약</div>
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-label">상승 예상</div>
+      <div class="sidebar-stat-value" style="color:var(--up)">10종목</div>
+    </div>
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-label">하락 예상</div>
+      <div class="sidebar-stat-value" style="color:var(--down)">3종목</div>
+    </div>
+    <a class="sidebar-back" href="../index.html">← 대시보드</a>
+  </div>
+  <div class="main"><div class="main-inner">
+      <div class="card">
     <div class="ticker-row">
       <div class="ticker">WMT<span class="market-badge">US</span></div>
       <div class="date">2026-08-20</div>
@@ -283,6 +335,8 @@
   </div>
 
   <div class="disclaimer">이 예측은 AI가 과거 데이터를 기반으로 생성한 참고용 정보이며, 투자 자문이 아닙니다.</div>
+
+  </div></div>
 </div>
 </body>
 </html>

@@ -1,0 +1,64 @@
+  <div class="card">
+    <div class="ticker-row">
+      <div class="ticker">{{TICKER}}<span class="market-badge">{{MARKET}}</span></div>
+      <div class="date">{{DATE}}</div>
+    </div>
+    <div class="name">{{NAME}}</div>
+
+    <div class="decision-badge {{DECISION_CLASS}}">
+      <span>{{ARROW}}</span><span>{{DECISION}}</span>
+    </div>
+
+    <div class="reasoning">{{REASONING}}</div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">종가 추이 (마우스를 올리면 날짜별 가격 확인 · 점선은 다음 거래일 예측가)</div>
+      {{CHART_SVG}}
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">오늘 종가</div>
+        <div class="stat-value">{{CURRENCY}}{{LATEST_CLOSE}}</div>
+      </div>
+      <div class="stat predicted-stat">
+        <div class="stat-label">다음 거래일 예측가</div>
+        <div class="stat-value">{{PREDICTED_PRICE}} <span style="font-size:12px">({{PREDICTED_CHANGE}})</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">20일 이동평균</div>
+        <div class="stat-value">{{CURRENCY}}{{SMA_20}}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">5일 변동률</div>
+        <div class="stat-value">{{CHANGE_5D}}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">기간 범위</div>
+        <div class="stat-value">{{CURRENCY}}{{RANGE}}</div>
+      </div>
+    </div>
+    <div class="disclaimer" style="margin-top:10px;">예측가는 최근 5거래일 평균 등락률을 단순 연장한 참고용 추정치이며, AI의 상승/하락 판단과는 별개입니다.</div>
+
+    <div class="period-title">구간별 변동률</div>
+    <div class="stats period-stats">
+      <div class="stat">
+        <div class="stat-label">1개월</div>
+        <div class="stat-value">{{CHANGE_1M}}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">3개월</div>
+        <div class="stat-value">{{CHANGE_3M}}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">6개월</div>
+        <div class="stat-value">{{CHANGE_6M}}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">1년</div>
+        <div class="stat-value">{{CHANGE_1Y}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disclaimer">이 예측은 AI가 과거 데이터를 기반으로 생성한 참고용 정보이며, 투자 자문이 아닙니다.</div>

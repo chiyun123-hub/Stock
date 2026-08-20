@@ -7,10 +7,63 @@ from datetime import date
 
 from analyzer import load_data, calculate_sma
 from chart import interactive_chart_html, naive_predicted_price, period_return
+from common import load_sidebar_context, render_page
 
 BASE_DIR = os.path.dirname(__file__)
-TEMPLATE_PATH = os.path.join(BASE_DIR, "stock_template.html")
+CONTENT_TEMPLATE_PATH = os.path.join(BASE_DIR, "stock_content_template.html")
 OUTPUT_DIR = os.path.join(BASE_DIR, "stocks")
+
+EXTRA_CSS = """
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+    padding: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.4); margin-bottom: 24px;
+  }
+  .ticker-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .ticker { font-size: 26px; font-weight: 800; }
+  .market-badge {
+    font-size: 11px; font-weight: 700; color: var(--muted);
+    border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; margin-left: 8px;
+  }
+  .name { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+  .decision-badge {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 22px 0; border-radius: 14px; margin-bottom: 20px; font-size: 32px; font-weight: 800;
+  }
+  .decision-badge.up   { background: rgba(34,197,94,0.12); color: var(--up); }
+  .decision-badge.down { background: rgba(239,68,68,0.12); color: var(--down); }
+  .reasoning {
+    font-size: 14px; line-height: 1.6; background: #0e141b; border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 16px; margin-bottom: 20px;
+  }
+  .chart-wrap { background: #0e141b; border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+  .chart-title { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+  .range-buttons { display: flex; gap: 6px; margin-bottom: 10px; }
+  .range-btn {
+    background: #0e141b; border: 1px solid var(--border); color: var(--muted);
+    font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 8px;
+    cursor: pointer; font-family: inherit;
+  }
+  .range-btn:hover { border-color: var(--accent); color: var(--text); }
+  .range-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chart-container { position: relative; }
+  .price-chart { width: 100%; height: auto; display: block; cursor: crosshair; }
+  .chart-empty { font-size: 13px; color: var(--muted); text-align: center; padding: 40px 0; }
+  .chart-tooltip {
+    position: absolute; top: 8px; background: #1a2330; border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4;
+    pointer-events: none; white-space: nowrap; z-index: 5;
+  }
+  .predicted-stat { border-color: var(--accent); }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat { background: #0e141b; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+  .stat-label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .period-title { font-size: 12px; color: var(--muted); margin: 20px 0 8px; }
+  .period-stats { grid-template-columns: repeat(4, 1fr); margin-bottom: 20px; }
+  .pct-up { color: var(--up); }
+  .pct-down { color: var(--down); }
+  .stat-value { font-size: 16px; font-weight: 600; margin-top: 4px; }
+  .disclaimer { font-size: 11px; color: var(--muted); text-align: center; line-height: 1.5; }
+"""
 
 
 def safe_name(ticker: str) -> str:
@@ -25,7 +78,7 @@ def find_csv(ticker: str) -> str | None:
     return None
 
 
-def build_page(item: dict) -> str:
+def build_page(item: dict, ctx: dict) -> str:
     ticker = item["ticker"]
     market = item.get("market", "US")
     currency = item.get("currency", "$")
@@ -70,8 +123,8 @@ def build_page(item: dict) -> str:
         predicted_price_text = "N/A"
         predicted_change_text = "N/A"
 
-    with open(TEMPLATE_PATH, encoding="utf-8") as f:
-        template = f.read()
+    with open(CONTENT_TEMPLATE_PATH, encoding="utf-8") as f:
+        content = f.read()
 
     replacements = {
         "{{TICKER}}": ticker,
@@ -96,12 +149,14 @@ def build_page(item: dict) -> str:
         "{{PREDICTED_CHANGE}}": predicted_change_text,
     }
     for key, value in replacements.items():
-        template = template.replace(key, str(value))
-    return template
+        content = content.replace(key, str(value))
+
+    return render_page(f"{ticker} 예측 상세", "", content, EXTRA_CSS, prefix="../", **ctx)
 
 
 def main() -> None:
     os.makedirs(OUTPUT_DIR, exist_ok=True)
+    ctx = load_sidebar_context()
 
     items = []
     universe_path = "data/predictions_universe.json"
@@ -119,7 +174,7 @@ def main() -> None:
 
     written = 0
     for item in items:
-        html = build_page(item)
+        html = build_page(item, ctx)
         out_path = os.path.join(OUTPUT_DIR, f"{safe_name(item['ticker'])}.html")
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(html)

@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>예측 정확도</title>
 <style>
+
   :root {
     --bg: #0b0f14; --card: #131a22; --border: #232b35;
     --text: #e8edf2; --muted: #8b98a5; --up: #22c55e; --down: #ef4444; --accent: #3b82f6;
@@ -12,23 +13,47 @@
   body {
     margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
     font-family: -apple-system, "Segoe UI", "Malgun Gothic", Pretendard, sans-serif;
-    padding: 40px 20px 60px;
   }
-  .page { max-width: 780px; margin: 0 auto; }
-  .back-link { display: inline-block; margin-bottom: 20px; color: var(--muted); text-decoration: none; font-size: 13px; }
-  .back-link:hover { color: var(--text); }
+  .layout { display: flex; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar { width: 280px; flex-shrink: 0; background: #0e141b; border-right: 1px solid var(--border); padding: 28px 20px; }
+  .brand { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .brand-sub { font-size: 12px; color: var(--muted); margin-bottom: 28px; }
+  .sidebar-title { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+  .sidebar-nav { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+  .sidebar-nav-item {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; font-size: 13px; font-weight: 600; color: var(--text);
+    text-decoration: none; transition: border-color 0.15s;
+  }
+  .sidebar-nav-item:hover { border-color: var(--accent); }
+  .sidebar-nav-item.active { border-color: var(--accent); background: #16202e; }
+  .nav-badge { font-size: 11px; font-weight: 700; color: var(--muted); background: #0e141b; border-radius: 10px; padding: 2px 8px; }
+  .sidebar-stat { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+  .sidebar-stat-label { font-size: 11px; color: var(--muted); }
+  .sidebar-stat-value { font-size: 15px; font-weight: 700; margin-top: 2px; }
+  .sidebar-back { display: inline-block; margin-top: 8px; color: var(--muted); text-decoration: none; font-size: 13px; }
+  .sidebar-back:hover { color: var(--text); }
+
+  /* Main */
+  .main { flex: 1; display: flex; justify-content: center; padding: 40px 32px 60px; }
+  .main-inner { width: 100%; max-width: 900px; }
+
+  @media (max-width: 720px) {
+    .layout { flex-direction: column; }
+    .sidebar { width: 100%; }
+  }
+
+
   h1 { font-size: 24px; margin: 0 0 4px; }
   .sub { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
-
   .summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px; }
-  .summary-card {
-    background: var(--card); border: 1px solid var(--border); border-radius: 14px;
-    padding: 20px; text-align: center;
-  }
+  .summary-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; text-align: center; }
   .summary-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
   .summary-value { font-size: 28px; font-weight: 800; }
   .summary-value.accent { color: var(--accent); }
-
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
   th { color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; }
@@ -40,30 +65,59 @@
   .empty { color: var(--muted); font-size: 14px; text-align: center; padding: 60px 0; }
   .note { font-size: 12px; color: var(--muted); margin-top: 20px; line-height: 1.6; }
   .table-wrap { overflow-x: auto; }
+
 </style>
 </head>
 <body>
-<div class="page">
-  <a class="back-link" href="index.html">← 대시보드로 돌아가기</a>
-  <h1>🎯 예측 정확도</h1>
-  <div class="sub">AI가 UP/DOWN으로 예측한 다음 거래일, 실제 주가가 그 방향으로 움직였는지 검증합니다.</div>
+<div class="layout">
+  <div class="sidebar">
+    <div class="brand">📈 주식 예측 대시보드</div>
+    <div class="brand-sub">2026-08-20 기준 · AI 스크리닝</div>
 
-  <div class="summary">
-    <div class="summary-card">
-      <div class="summary-label">전체 정확도</div>
-      <div class="summary-value accent">66.7%</div>
+    <div class="sidebar-title">메뉴</div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="issues.html">
+        <span>📰 오늘의 이슈</span><span class="nav-badge">20</span>
+      </a>
+      <a class="sidebar-nav-item active" href="accuracy.html">
+        <span>🎯 예측 정확도</span><span class="nav-badge">66.7%</span>
+      </a>
+      <a class="sidebar-nav-item" href="predictions.html">
+        <span>📊 종목 예측</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-title">요약</div>
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-label">상승 예상</div>
+      <div class="sidebar-stat-value" style="color:var(--up)">10종목</div>
     </div>
-    <div class="summary-card">
-      <div class="summary-label">적중 / 검증 완료</div>
-      <div class="summary-value">6 / 9</div>
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-label">하락 예상</div>
+      <div class="sidebar-stat-value" style="color:var(--down)">3종목</div>
     </div>
-    <div class="summary-card">
-      <div class="summary-label">검증 대기 (다음 거래일 미확정)</div>
-      <div class="summary-value">29</div>
-    </div>
+    <a class="sidebar-back" href="index.html">← 대시보드</a>
   </div>
+  <div class="main"><div class="main-inner">
+    <h1>🎯 예측 정확도</h1>
+    <div class="sub">AI가 UP/DOWN으로 예측한 다음 거래일, 실제 주가가 그 방향으로 움직였는지 검증합니다.</div>
 
-  <div class="table-wrap"><table><thead><tr><th>날짜</th><th>종목</th><th>예측</th><th>실제</th><th>등락률</th><th>결과</th></tr></thead><tbody><tr><td>2026-08-19</td><td>005930.KS</td><td><span class="badge up">UP</span></td><td><span class="badge up">UP</span></td><td>+6.06%</td><td><span class="result-ok">적중</span></td></tr>
+    <div class="summary">
+      <div class="summary-card">
+        <div class="summary-label">전체 정확도</div>
+        <div class="summary-value accent">66.7%</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">적중 / 검증 완료</div>
+        <div class="summary-value">6 / 9</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">검증 대기 (다음 거래일 미확정)</div>
+        <div class="summary-value">29</div>
+      </div>
+    </div>
+
+    <div class="table-wrap"><table><thead><tr><th>날짜</th><th>종목</th><th>예측</th><th>실제</th><th>등락률</th><th>결과</th></tr></thead><tbody><tr><td>2026-08-19</td><td>005930.KS</td><td><span class="badge up">UP</span></td><td><span class="badge up">UP</span></td><td>+6.06%</td><td><span class="result-ok">적중</span></td></tr>
 <tr><td>2026-08-19</td><td>051910.KS</td><td><span class="badge up">UP</span></td><td><span class="badge up">UP</span></td><td>+2.82%</td><td><span class="result-ok">적중</span></td></tr>
 <tr><td>2026-08-19</td><td>006400.KS</td><td><span class="badge up">UP</span></td><td><span class="badge up">UP</span></td><td>+4.72%</td><td><span class="result-ok">적중</span></td></tr>
 <tr><td>2026-08-19</td><td>207940.KS</td><td><span class="badge up">UP</span></td><td><span class="badge up">UP</span></td><td>+0.45%</td><td><span class="result-ok">적중</span></td></tr>
@@ -73,11 +127,12 @@
 <tr><td>2026-08-19</td><td>000270.KS</td><td><span class="badge down">DOWN</span></td><td><span class="badge down">DOWN</span></td><td>-0.23%</td><td><span class="result-ok">적중</span></td></tr>
 <tr><td>2026-08-19</td><td>105560.KS</td><td><span class="badge down">DOWN</span></td><td><span class="badge down">DOWN</span></td><td>-2.52%</td><td><span class="result-ok">적중</span></td></tr></tbody></table></div>
 
-  <div class="note">
-    정확도는 예측일 종가 대비 다음 거래일 종가의 실제 등락 방향과 AI의 UP/DOWN 판단을 비교해 계산합니다.
-    다음 거래일 데이터가 아직 수집되지 않은 예측은 "검증 대기"로 분류되며 정확도 계산에서 제외됩니다.
-    이 페이지는 투자 자문이 아니라 예측 시스템 자체의 성능 추적용입니다.
-  </div>
+    <div class="note">
+      정확도는 예측일 종가 대비 다음 거래일 종가의 실제 등락 방향과 AI의 UP/DOWN 판단을 비교해 계산합니다.
+      다음 거래일 데이터가 아직 수집되지 않은 예측은 "검증 대기"로 분류되며 정확도 계산에서 제외됩니다.
+      이 페이지는 투자 자문이 아니라 예측 시스템 자체의 성능 추적용입니다.
+    </div>
+  </div></div>
 </div>
 </body>
 </html>

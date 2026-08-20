@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>종목 예측</title>
+<style>
+
+  :root {
+    --bg: #0b0f14; --card: #131a22; --border: #232b35;
+    --text: #e8edf2; --muted: #8b98a5; --up: #22c55e; --down: #ef4444; --accent: #3b82f6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+    font-family: -apple-system, "Segoe UI", "Malgun Gothic", Pretendard, sans-serif;
+  }
+  .layout { display: flex; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar { width: 280px; flex-shrink: 0; background: #0e141b; border-right: 1px solid var(--border); padding: 28px 20px; }
+  .brand { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .brand-sub { font-size: 12px; color: var(--muted); margin-bottom: 28px; }
+  .sidebar-title { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+  .sidebar-nav { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+  .sidebar-nav-item {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; font-size: 13px; font-weight: 600; color: var(--text);
+    text-decoration: none; transition: border-color 0.15s;
+  }
+  .sidebar-nav-item:hover { border-color: var(--accent); }
+  .sidebar-nav-item.active { border-color: var(--accent); background: #16202e; }
+  .nav-badge { font-size: 11px; font-weight: 700; color: var(--muted); background: #0e141b; border-radius: 10px; padding: 2px 8px; }
+  .sidebar-stat { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+  .sidebar-stat-label { font-size: 11px; color: var(--muted); }
+  .sidebar-stat-value { font-size: 15px; font-weight: 700; margin-top: 2px; }
+  .sidebar-back { display: inline-block; margin-top: 8px; color: var(--muted); text-decoration: none; font-size: 13px; }
+  .sidebar-back:hover { color: var(--text); }
+
+  /* Main */
+  .main { flex: 1; display: flex; justify-content: center; padding: 40px 32px 60px; }
+  .main-inner { width: 100%; max-width: 900px; }
+
+  @media (max-width: 720px) {
+    .layout { flex-direction: column; }
+    .sidebar { width: 100%; }
+  }
+
+
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+  .date-list { list-style: none; margin: 0; padding: 0; }
+  .date-item {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px 20px; margin-bottom: 12px; text-decoration: none; color: var(--text);
+    transition: border-color 0.15s;
+  }
+  .date-item:hover { border-color: var(--accent); }
+  .date-main { font-size: 15px; font-weight: 700; }
+  .date-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .date-accuracy { font-size: 18px; font-weight: 800; color: var(--accent); }
+  .date-accuracy.pending { color: var(--muted); font-size: 13px; font-weight: 600; }
+  .empty { color: var(--muted); font-size: 14px; text-align: center; padding: 60px 0; }
+
+</style>
+</head>
+<body>
+<div class="layout">
+  <div class="sidebar">
+    <div class="brand">📈 주식 예측 대시보드</div>
+    <div class="brand-sub">2026-08-20 기준 · AI 스크리닝</div>
+
+    <div class="sidebar-title">메뉴</div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="issues.html">
+        <span>📰 오늘의 이슈</span><span class="nav-badge">20</span>
+      </a>
+      <a class="sidebar-nav-item" href="accuracy.html">
+        <span>🎯 예측 정확도</span><span class="nav-badge">66.7%</span>
+      </a>
+      <a class="sidebar-nav-item active" href="predictions.html">
+        <span>📊 종목 예측</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-title">요약</div>
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-label">상승 예상</div>
+      <div class="sidebar-stat-value" style="color:var(--up)">10종목</div>
+    </div>
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-label">하락 예상</div>
+      <div class="sidebar-stat-value" style="color:var(--down)">3종목</div>
+    </div>
+    <a class="sidebar-back" href="index.html">← 대시보드</a>
+  </div>
+  <div class="main"><div class="main-inner">
+    <h1>📊 종목 예측</h1>
+    <div class="sub">날짜를 선택하면 그날 예측한 종목과 정확도를 볼 수 있습니다.</div>
+    <ul class="date-list"><a class="date-item" href="predictions_2026-08-20.html"><div><div class="date-main">2026-08-20</div><div class="date-sub">13개 종목 예측 · 0개 검증 완료</div></div><div class="date-accuracy pending">검증 대기</div></a><a class="date-item" href="predictions_2026-08-19.html"><div><div class="date-main">2026-08-19</div><div class="date-sub">25개 종목 예측 · 9개 검증 완료</div></div><div class="date-accuracy">67%</div></a></ul>
+  </div></div>
+</div>
+</body>
+</html>

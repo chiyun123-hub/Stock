@@ -3,11 +3,25 @@ linked from the sidebar's "오늘의 이슈" item.
 """
 import json
 import os
-from datetime import date
 
-BASE_DIR = os.path.dirname(__file__)
-TEMPLATE_PATH = os.path.join(BASE_DIR, "issues_template.html")
-OUTPUT_PATH = os.path.join(BASE_DIR, "issues.html")
+from common import load_sidebar_context, render_page
+
+OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "issues.html")
+
+EXTRA_CSS = """
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+  .news-list { list-style: none; margin: 0; padding: 0; }
+  .news-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; }
+  .news-item a { color: var(--text); text-decoration: none; display: block; }
+  .news-item a:hover { color: var(--accent); }
+  .news-ticker {
+    display: inline-block; font-size: 11px; font-weight: 700; color: var(--accent);
+    border: 1px solid var(--accent); border-radius: 4px; padding: 2px 6px; margin-right: 8px;
+  }
+  .news-title { font-size: 14px; line-height: 1.5; }
+  .empty { color: var(--muted); font-size: 14px; text-align: center; padding: 60px 0; }
+"""
 
 
 def load_issues(path: str = "data/today_issues.json") -> list[dict]:
@@ -33,19 +47,13 @@ def render_list(headlines: list[dict]) -> str:
 
 def main() -> None:
     headlines = load_issues()
-    with open(TEMPLATE_PATH, encoding="utf-8") as f:
-        template = f.read()
-
-    replacements = {
-        "{{DATE}}": date.today().isoformat(),
-        "{{COUNT}}": str(len(headlines)),
-        "{{NEWS_LIST}}": render_list(headlines),
-    }
-    for key, value in replacements.items():
-        template = template.replace(key, value)
-
+    ctx = load_sidebar_context()
+    content = f'''<h1>📰 오늘의 이슈</h1>
+    <div class="sub">{ctx["date_str"]} · 예측 대상 종목 관련 뉴스 {len(headlines)}건</div>
+    {render_list(headlines)}'''
+    html = render_page("오늘의 이슈", "issues", content, EXTRA_CSS, **ctx)
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
-        f.write(template)
+        f.write(html)
     print(f"Wrote {OUTPUT_PATH}")
 
 
