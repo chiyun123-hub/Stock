@@ -33,11 +33,15 @@ EXTRA_CSS = """
   .stat-value { font-size: 16px; font-weight: 600; margin-top: 4px; }
   .disclaimer { font-size: 11px; color: var(--muted); text-align: center; line-height: 1.5; }
   .section-title { font-size: 20px; font-weight: 700; margin: 0 0 16px; }
-  .universe { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 40px; }
-  @media (max-width: 720px) { .universe { grid-template-columns: 1fr; } }
-  .col-title { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; margin-bottom: 12px; padding: 0 4px; }
-  .col-title.up   { color: var(--up); }
-  .col-title.down { color: var(--down); }
+  .prediction-table { margin-bottom: 40px; border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
+  .prediction-table.up   { border-color: rgba(34,197,94,0.3); }
+  .prediction-table.down { border-color: rgba(239,68,68,0.3); }
+  .table-title { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+  .table-title.up   { color: var(--up); }
+  .table-title.down { color: var(--down); }
+  .market-groups { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 720px) { .market-groups { grid-template-columns: 1fr; } }
+  .col-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; margin-bottom: 12px; padding: 0 4px; color: var(--muted); }
   .stock-row {
     display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
     background: var(--card); border: 1px solid var(--border); border-radius: 12px;
@@ -130,17 +134,36 @@ def render_content(prediction: dict, stats: dict, universe: dict) -> str:
       <div class="disclaimer">이 예측은 AI가 과거 데이터를 기반으로 생성한 참고용 정보이며,<br>투자 자문이 아닙니다.</div>
     </div>
 
-    <div class="section-title">국내·해외 대형주 20종목 스크리닝</div>
-    <div class="universe">
-      <div class="col">
-        <div class="col-title up">▲ 상승 예상 ({len(universe.get("up", []))})</div>
-        {render_rows(universe.get("up", []))}
-      </div>
-      <div class="col">
-        <div class="col-title down">▼ 하락 예상 ({len(universe.get("down", []))})</div>
-        {render_rows(universe.get("down", []))}
+    <div class="section-title">국내·해외 대형주 스크리닝</div>
+
+    <div class="prediction-table up">
+      <div class="table-title up">▲ 상승 예상</div>
+      <div class="market-groups">
+        <div class="col">
+          <div class="col-title">🇰🇷 국장 ({len(universe.get("up_kr", []))}/10)</div>
+          {render_rows(universe.get("up_kr", []))}
+        </div>
+        <div class="col">
+          <div class="col-title">🇺🇸 미장 ({len(universe.get("up_us", []))}/10)</div>
+          {render_rows(universe.get("up_us", []))}
+        </div>
       </div>
     </div>
+
+    <div class="prediction-table down">
+      <div class="table-title down">▼ 하락 예상</div>
+      <div class="market-groups">
+        <div class="col">
+          <div class="col-title">🇰🇷 국장 ({len(universe.get("down_kr", []))}/10)</div>
+          {render_rows(universe.get("down_kr", []))}
+        </div>
+        <div class="col">
+          <div class="col-title">🇺🇸 미장 ({len(universe.get("down_us", []))}/10)</div>
+          {render_rows(universe.get("down_us", []))}
+        </div>
+      </div>
+    </div>
+
     <div class="disclaimer">스크리닝 결과는 20일 이동평균·최근 5일 수익률 기반 추세 판단이며, 투자 자문이 아닙니다.</div>'''
 
 

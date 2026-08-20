@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>086790.KS 예측 상세</title>
+<style>
+
+  :root {
+    --bg: #0b0f14; --card: #131a22; --border: #232b35;
+    --text: #e8edf2; --muted: #8b98a5; --up: #22c55e; --down: #ef4444; --accent: #3b82f6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+    font-family: -apple-system, "Segoe UI", "Malgun Gothic", Pretendard, sans-serif;
+  }
+  .layout { display: flex; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar { width: 280px; flex-shrink: 0; background: #0e141b; border-right: 1px solid var(--border); padding: 28px 20px; }
+  .brand { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .brand-sub { font-size: 12px; color: var(--muted); margin-bottom: 28px; }
+  .sidebar-title { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+  .sidebar-nav { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+  .sidebar-nav-item {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; font-size: 13px; font-weight: 600; color: var(--text);
+    text-decoration: none; transition: border-color 0.15s;
+  }
+  .sidebar-nav-item:hover { border-color: var(--accent); }
+  .sidebar-nav-item.active { border-color: var(--accent); background: #16202e; }
+  .nav-badge { font-size: 11px; font-weight: 700; color: var(--muted); background: #0e141b; border-radius: 10px; padding: 2px 8px; }
+  .sidebar-stat { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+  .sidebar-stat-label { font-size: 11px; color: var(--muted); }
+  .sidebar-stat-value { font-size: 15px; font-weight: 700; margin-top: 2px; }
+  .sidebar-back { display: inline-block; margin-top: 8px; color: var(--muted); text-decoration: none; font-size: 13px; }
+  .sidebar-back:hover { color: var(--text); }
+
+  /* Main */
+  .main { flex: 1; display: flex; justify-content: center; padding: 40px 32px 60px; }
+  .main-inner { width: 100%; max-width: 900px; }
+
+  @media (max-width: 720px) {
+    .layout { flex-direction: column; }
+    .sidebar { width: 100%; }
+  }
+
+
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+    padding: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.4); margin-bottom: 24px;
+  }
+  .ticker-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .ticker { font-size: 26px; font-weight: 800; }
+  .market-badge {
+    font-size: 11px; font-weight: 700; color: var(--muted);
+    border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; margin-left: 8px;
+  }
+  .name { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+  .decision-badge {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 22px 0; border-radius: 14px; margin-bottom: 20px; font-size: 32px; font-weight: 800;
+  }
+  .decision-badge.up   { background: rgba(34,197,94,0.12); color: var(--up); }
+  .decision-badge.down { background: rgba(239,68,68,0.12); color: var(--down); }
+  .reasoning {
+    font-size: 14px; line-height: 1.6; background: #0e141b; border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 16px; margin-bottom: 20px;
+  }
+  .chart-wrap { background: #0e141b; border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+  .chart-title { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+  .range-buttons { display: flex; gap: 6px; margin-bottom: 10px; }
+  .range-btn {
+    background: #0e141b; border: 1px solid var(--border); color: var(--muted);
+    font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 8px;
+    cursor: pointer; font-family: inherit;
+  }
+  .range-btn:hover { border-color: var(--accent); color: var(--text); }
+  .range-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chart-container { position: relative; }
+  .price-chart { width: 100%; height: auto; display: block; cursor: crosshair; }
+  .chart-empty { font-size: 13px; color: var(--muted); text-align: center; padding: 40px 0; }
+  .chart-tooltip {
+    position: absolute; top: 8px; background: #1a2330; border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4;
+    pointer-events: none; white-space: nowrap; z-index: 5;
+  }
+  .predicted-stat { border-color: var(--accent); }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat { background: #0e141b; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+  .stat-label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .period-title { font-size: 12px; color: var(--muted); margin: 20px 0 8px; }
+  .period-stats { grid-template-columns: repeat(4, 1fr); margin-bottom: 20px; }
+  .pct-up { color: var(--up); }
+  .pct-down { color: var(--down); }
+  .stat-value { font-size: 16px; font-weight: 600; margin-top: 4px; }
+  .disclaimer { font-size: 11px; color: var(--muted); text-align: center; line-height: 1.5; }
+
+</style>
+</head>
+<body>
+<div class="layout">
+  <div class="sidebar">
+    <div class="brand">📈 주식 예측 대시보드</div>
+    <div class="brand-sub">2026-08-20 기준 · AI 스크리닝</div>
+
+    <div class="sidebar-title">메뉴</div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="../issues.html">
+        <span>📰 오늘의 이슈</span><span class="nav-badge">12</span>
+      </a>
+      <a class="sidebar-nav-item" href="../accuracy.html">
+        <span>🎯 예측 정확도</span><span class="nav-badge">55.6%</span>
+      </a>
+      <a class="sidebar-nav-item" href="../predictions.html">
+        <span>📊 종목 예측</span>
+      </a>
+      <a class="sidebar-nav-item" href="../my_stocks.html">
+        <span>💼 내 주식</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-title">요약</div>
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-label">상승 예상</div>
+      <div class="sidebar-stat-value" style="color:var(--up)">20종목</div>
+    </div>
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-label">하락 예상</div>
+      <div class="sidebar-stat-value" style="color:var(--down)">18종목</div>
+    </div>
+    <a class="sidebar-back" href="../index.html">← 대시보드</a>
+  </div>
+  <div class="main"><div class="main-inner">
+      <div class="card">
+    <div class="ticker-row">
+      <div class="ticker">하나금융지주<span class="market-badge">KR</span></div>
+      <div class="date">2026-08-20</div>
+    </div>
+    <div class="name">086790.KS</div>
+
+    <div class="decision-badge down">
+      <span>▼</span><span>DOWN</span>
+    </div>
+
+    <div class="reasoning">현재 주가가 20일 이동평균선 아래에 위치하고 최근 5일간 하락세를 보이고 있기 때문입니다.</div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">종가 추이 (마우스를 올리면 날짜별 가격 확인 · 점선은 다음 거래일 예측가)</div>
+      <div class="chart-container" id="chart-086790_ks">
+  <div class="range-buttons"><button type="button" class="range-btn" data-days="2">1일</button>
+<button type="button" class="range-btn" data-days="3">3일</button>
+<button type="button" class="range-btn" data-days="5">1주</button>
+<button type="button" class="range-btn" data-days="21">1개월</button>
+<button type="button" class="range-btn active" data-days="">전체</button></div>
+  <svg viewBox="0 0 680 320" class="price-chart">
+    <g class="y-axis"></g>
+    <g class="x-axis"></g>
+    <polyline class="price-line" points="" fill="none" stroke="#ef4444" stroke-width="2"></polyline>
+    <g class="pred-marker"></g>
+    <line class="hover-line" x1="0" y1="16" x2="0" y2="288" stroke="#8b98a5" stroke-width="1" style="display:none"></line>
+    <circle class="hover-dot" r="4" fill="#ef4444" stroke="#0b0f14" stroke-width="2" style="display:none"></circle>
+    <rect class="hover-capture" x="64" y="16" width="596" height="272" fill="transparent"></rect>
+  </svg>
+  <div class="chart-tooltip" style="display:none"></div>
+  <script type="application/json" class="chart-data">{"dates": ["2025-08-20", "2025-08-21", "2025-08-22", "2025-08-25", "2025-08-26", "2025-08-27", "2025-08-28", "2025-08-29", "2025-09-01", "2025-09-02", "2025-09-03", "2025-09-04", "2025-09-05", "2025-09-08", "2025-09-09", "2025-09-10", "2025-09-11", "2025-09-12", "2025-09-15", "2025-09-16", "2025-09-17", "2025-09-18", "2025-09-22", "2025-09-23", "2025-09-24", "2025-09-25", "2025-09-26", "2025-09-29", "2025-09-30", "2025-10-01", "2025-10-02", "2025-10-10", "2025-10-13", "2025-10-14", "2025-10-15", "2025-10-16", "2025-10-17", "2025-10-20", "2025-10-21", "2025-10-22", "2025-10-23", "2025-10-24", "2025-10-27", "2025-10-28", "2025-10-29", "2025-10-30", "2025-10-31", "2025-11-03", "2025-11-04", "2025-11-05", "2025-11-06", "2025-11-07", "2025-11-10", "2025-11-11", "2025-11-12", "2025-11-13", "2025-11-14", "2025-11-17", "2025-11-18", "2025-11-19", "2025-11-20", "2025-11-21", "2025-11-24", "2025-11-25", "2025-11-26", "2025-11-27", "2025-11-28", "2025-12-01", "2025-12-02", "2025-12-03", "2025-12-04", "2025-12-05", "2025-12-08", "2025-12-09", "2025-12-10", "2025-12-11", "2025-12-12", "2025-12-15", "2025-12-16", "2025-12-17", "2025-12-18", "2025-12-19", "2025-12-22", "2025-12-23", "2025-12-24", "2025-12-26", "2025-12-29", "2025-12-30", "2026-01-02", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-19", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-19", "2026-02-20", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-06", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-04", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-06-01", "2026-06-02", "2026-06-04", "2026-06-05", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-19", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-03", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-27", "2026-07-28", "2026-07-29", "2026-07-30", "2026-07-31", "2026-08-03", "2026-08-04", "2026-08-05", "2026-08-06", "2026-08-07", "2026-08-10", "2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-18", "2026-08-19", "2026-08-20"], "values": [79605.078125, 79797.5859375, 79220.046875, 79508.8125, 78642.5, 78931.2734375, 79797.5859375, 79123.7890625, 78257.4765625, 79123.7890625, 79990.1015625, 78546.234375, 78161.203125, 78449.9765625, 80182.6171875, 83840.4140625, 84417.9609375, 85380.5390625, 87498.203125, 87401.9375, 86631.890625, 86535.6171875, 87016.9140625, 86150.59375, 85765.5625, 85573.0390625, 83840.4140625, 85476.7890625, 83936.6640625, 83262.859375, 85476.7890625, 82781.578125, 82107.7734375, 81241.453125, 83166.6171875, 83936.6640625, 82877.8359375, 85091.7578125, 84995.5078125, 85284.2734375, 84417.9609375, 84706.734375, 84514.21875, 84610.4609375, 82589.0625, 82685.3203125, 82300.2890625, 82396.5390625, 84610.4609375, 83647.8984375, 89519.609375, 88557.0390625, 92599.8515625, 90286.8046875, 93688.3515625, 93493.9765625, 91744.6171875, 90481.171875, 88440.25, 89995.2421875, 89314.9296875, 88440.25, 86982.4453125, 88245.875, 90286.8046875, 90675.546875, 90675.546875, 91744.6171875, 94563.0390625, 93299.6015625, 91841.796875, 92522.1015625, 91355.8671875, 90383.9921875, 89023.3671875, 89023.3671875, 90092.4296875, 89217.7421875, 89703.6796875, 90189.609375, 89120.5546875, 89800.859375, 91453.046875, 90383.9921875, 92230.546875, 91161.484375, 92230.546875, 91453.046875, 90772.734375, 91453.046875, 92230.546875, 90869.921875, 89314.9296875, 90286.8046875, 91355.8671875, 91647.421875, 93396.78125, 93493.9765625, 93688.3515625, 93493.9765625, 97478.6484375, 96992.7109375, 97673.015625, 98256.1484375, 98353.328125, 102046.4375, 99811.1328125, 100685.8203125, 97284.2734375, 100394.2578125, 107100.1640625, 109335.4765625, 110890.4609375, 111376.3984375, 115458.2578125, 118762.6171875, 122261.359375, 126343.2109375, 124010.71875, 122747.2890625, 127606.640625, 125468.5234375, 122552.9140625, 122455.7265625, 122717.078125, 119671.25, 118000.96875, 103656.1328125, 109256.515625, 108372.2421875, 106014.1875, 107979.234375, 111418.0703125, 110533.796875, 106996.7109375, 106505.453125, 107979.234375, 112498.84375, 111221.5625, 111221.5625, 104147.3984375, 104638.65625, 106800.2109375, 106898.4609375, 108470.4921875, 105326.4296875, 104736.90625, 110828.546875, 108470.4921875, 107782.734375, 110435.546875, 109256.515625, 115053.40625, 115053.40625, 117411.453125, 117902.71875, 118688.7265625, 118983.4921875, 120359.0234375, 121341.546875, 120555.5234375, 120850.28125, 117411.453125, 118786.9921875, 121145.0390625, 121832.8046875, 124780.3671875, 124878.625, 125664.640625, 124387.3671875, 123306.5859375, 126548.9140625, 125403.921875, 125503.0546875, 122033.3828125, 121240.3125, 125403.921875, 117968.90625, 113210.4921875, 114300.9609375, 114598.3671875, 118365.4375, 121042.046875, 118960.2421875, 117374.1015625, 114300.9609375, 114102.6953125, 112913.09375, 115986.234375, 119555.0390625, 122529.046875, 111426.09375, 117968.90625, 116878.4375, 113805.296875, 119951.578125, 128179.65625, 130856.265625, 125701.3203125, 125007.3828125, 122429.9140625, 118662.8359375, 114499.234375, 113210.4921875, 113012.2265625, 108749.484375, 113805.296875, 113607.03125, 115391.4296875, 119753.3046875, 124511.71875, 123718.6484375, 125800.453125, 121240.3125, 121537.7109375, 127386.59375, 131451.0625, 132838.9375, 135614.671875, 135614.671875, 132244.140625, 131451.0625, 130459.7265625, 129369.2578125, 131252.796875, 129468.390625, 121934.2421875, 119356.7734375, 123520.3828125, 124313.453125, 125800.453125, 126494.390625, 127485.7265625, 132145.0, 134700.0, 130400.0, 127700.0, 127900.0, 131000.0, 133000.0, 130700.0, 127500.0, 123400.0], "currency": "\u20a9", "predicted": 122550.29759414436, "color": "#ef4444", "width": 680, "height": 320, "padL": 64, "padR": 20, "padT": 16, "padB": 32}</script>
+</div>
+<script>
+(function() {
+  const root = document.getElementById("chart-086790_ks");
+  const svg = root.querySelector("svg");
+  const yAxis = root.querySelector(".y-axis");
+  const xAxis = root.querySelector(".x-axis");
+  const line = root.querySelector(".price-line");
+  const predGroup = root.querySelector(".pred-marker");
+  const capture = root.querySelector(".hover-capture");
+  const hoverLine = root.querySelector(".hover-line");
+  const hoverDot = root.querySelector(".hover-dot");
+  const tooltip = root.querySelector(".chart-tooltip");
+  const full = JSON.parse(root.querySelector(".chart-data").textContent);
+  const { padL, padR, padT, padB, width: W, height: H, color } = full;
+  const innerW = W - padL - padR, innerH = H - padT - padB;
+
+  let state = { dates: [], values: [], lo: 0, hi: 1, lastI: 1 };
+
+  function niceTicks(lo, hi, count) {
+    const step = (hi - lo) / Math.max(count - 1, 1) || 1;
+    return Array.from({length: count}, (_, i) => lo + step * i);
+  }
+
+  function svgEl(tag, attrs) {
+    const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+    for (const k in attrs) el.setAttribute(k, attrs[k]);
+    return el;
+  }
+
+  function render(days) {
+    const n = full.values.length;
+    const sliceStart = days ? Math.max(n - days, 0) : 0;
+    const dates = full.dates.slice(sliceStart);
+    const values = full.values.slice(sliceStart);
+    const hasPred = full.predicted !== null && full.predicted !== undefined;
+    const allValues = hasPred ? values.concat([full.predicted]) : values;
+    let lo = Math.min(...allValues), hi = Math.max(...allValues);
+    const span0 = (hi - lo) || 1;
+    lo -= span0 * 0.05; hi += span0 * 0.05;
+    const span = hi - lo;
+    const lastI = values.length - 1 + (hasPred ? 1 : 0);
+
+    state = { dates, values, lo, hi, lastI, hasPred, predicted: full.predicted };
+
+    const x = i => padL + innerW * i / Math.max(lastI, 1);
+    const y = v => padT + innerH - innerH * (v - lo) / span;
+
+    line.setAttribute("points", values.map((v, i) => x(i) + "," + y(v)).join(" "));
+
+    yAxis.innerHTML = "";
+    niceTicks(lo, hi, 5).forEach(t => {
+      yAxis.appendChild(svgEl("line", {x1: padL, y1: y(t), x2: W - padR, y2: y(t), stroke: "#232b35", "stroke-width": 1}));
+      const label = svgEl("text", {x: padL - 8, y: y(t) + 4, fill: "#8b98a5", "font-size": 11, "text-anchor": "end"});
+      label.textContent = full.currency + Math.round(t).toLocaleString();
+      yAxis.appendChild(label);
+    });
+
+    xAxis.innerHTML = "";
+    const tickCount = Math.min(5, dates.length);
+    const idxs = new Set();
+    for (let k = 0; k < tickCount; k++) idxs.add(Math.round(k * (dates.length - 1) / Math.max(tickCount - 1, 1)));
+    [...idxs].forEach(i => {
+      const label = svgEl("text", {x: x(i), y: H - 8, fill: "#8b98a5", "font-size": 11, "text-anchor": "middle"});
+      label.textContent = dates[i];
+      xAxis.appendChild(label);
+    });
+
+    predGroup.innerHTML = "";
+    if (hasPred) {
+      const lastX = x(values.length - 1), lastY = y(values[values.length - 1]);
+      const predX = x(values.length), predY = y(full.predicted);
+      predGroup.appendChild(svgEl("line", {x1: lastX, y1: lastY, x2: predX, y2: predY, stroke: color, "stroke-width": 2, "stroke-dasharray": "4,4"}));
+      predGroup.appendChild(svgEl("circle", {cx: predX, cy: predY, r: 5, fill: color, stroke: "#0b0f14", "stroke-width": 2}));
+      const label = svgEl("text", {x: predX, y: predY - 12, fill: color, "font-size": 12, "font-weight": 700, "text-anchor": "middle"});
+      label.textContent = "예측 " + full.currency + full.predicted.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      predGroup.appendChild(label);
+    }
+  }
+
+  function handleMove(evt) {
+    const rect = svg.getBoundingClientRect();
+    const scale = W / rect.width;
+    const svgX = (evt.clientX - rect.left) * scale;
+    const ratio = Math.min(Math.max((svgX - padL) / innerW, 0), 1);
+    const idx = Math.round(ratio * state.lastI);
+    const displayValues = state.hasPred ? state.values.concat([state.predicted]) : state.values;
+    const displayDates = state.hasPred ? state.dates.concat(["예측 (다음 거래일)"]) : state.dates;
+    const clamped = Math.min(Math.max(idx, 0), displayValues.length - 1);
+    const px = padL + innerW * clamped / Math.max(state.lastI, 1);
+    const py = padT + innerH - innerH * (displayValues[clamped] - state.lo) / (state.hi - state.lo);
+
+    hoverLine.setAttribute("x1", px); hoverLine.setAttribute("x2", px);
+    hoverLine.style.display = "block";
+    hoverDot.setAttribute("cx", px); hoverDot.setAttribute("cy", py);
+    hoverDot.style.display = "block";
+
+    tooltip.style.display = "block";
+    tooltip.innerHTML = displayDates[clamped] + "<br><strong>" + full.currency +
+      displayValues[clamped].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + "</strong>";
+    const wrapRect = root.getBoundingClientRect();
+    const cursorX = evt.clientX - wrapRect.left;
+    tooltip.style.left = Math.min(cursorX + 12, wrapRect.width - 130) + "px";
+    tooltip.style.top = "8px";
+  }
+
+  capture.addEventListener("mousemove", handleMove);
+  capture.addEventListener("mouseleave", function() {
+    hoverLine.style.display = "none";
+    hoverDot.style.display = "none";
+    tooltip.style.display = "none";
+  });
+
+  root.querySelectorAll(".range-btn").forEach(btn => {
+    btn.addEventListener("click", function() {
+      root.querySelectorAll(".range-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      const days = btn.dataset.days ? parseInt(btn.dataset.days, 10) : null;
+      render(days);
+    });
+  });
+
+  render(null);
+})();
+</script>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">오늘 종가</div>
+        <div class="stat-value">₩123,400.00</div>
+      </div>
+      <div class="stat predicted-stat">
+        <div class="stat-label">다음 거래일 예측가</div>
+        <div class="stat-value">₩122,550.30 <span style="font-size:12px">(<span class="pct-down">-0.69%</span>)</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">20일 이동평균</div>
+        <div class="stat-value">₩127,872.04</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">5일 변동률</div>
+        <div class="stat-value"><span class="pct-down">-3.52%</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">기간 범위</div>
+        <div class="stat-value">₩78,161.20 - 135,614.67</div>
+      </div>
+    </div>
+    <div class="disclaimer" style="margin-top:10px;">예측가는 최근 5거래일 평균 등락률을 단순 연장한 참고용 추정치이며, AI의 상승/하락 판단과는 별개입니다.</div>
+
+    <div class="period-title">구간별 변동률</div>
+    <div class="stats period-stats">
+      <div class="stat">
+        <div class="stat-label">1개월</div>
+        <div class="stat-value"><span class="pct-down">-6.12%</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">3개월</div>
+        <div class="stat-value"><span class="pct-up">+7.96%</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">6개월</div>
+        <div class="stat-value"><span class="pct-up">+0.93%</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">1년</div>
+        <div class="stat-value">N/A</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disclaimer">이 예측은 AI가 과거 데이터를 기반으로 생성한 참고용 정보이며, 투자 자문이 아닙니다.</div>
+
+  </div></div>
+</div>
+</body>
+</html>

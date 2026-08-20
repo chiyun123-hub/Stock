@@ -47,6 +47,11 @@ KR_TICKERS = {
     "003670.KS": ("포스코퓨처엠", "KR", "₩"), "086790.KS": ("하나금융지주", "KR", "₩"),
     "015760.KS": ("한국전력", "KR", "₩"), "032830.KS": ("삼성생명", "KR", "₩"),
     "009150.KS": ("삼성전기", "KR", "₩"), "047050.KS": ("포스코인터내셔널", "KR", "₩"),
+    "051900.KS": ("LG생활건강", "KR", "₩"), "018260.KS": ("삼성에스디에스", "KR", "₩"),
+    "010130.KS": ("고려아연", "KR", "₩"), "011200.KS": ("HMM", "KR", "₩"),
+    "034730.KS": ("SK", "KR", "₩"), "030200.KS": ("KT", "KR", "₩"),
+    "003550.KS": ("LG", "KR", "₩"), "024110.KS": ("기업은행", "KR", "₩"),
+    "316140.KS": ("우리금융지주", "KR", "₩"), "010950.KS": ("S-Oil", "KR", "₩"),
 }
 TICKERS = {**US_TICKERS, **KR_TICKERS}
 
@@ -99,17 +104,29 @@ def main() -> None:
             print(f"{ticker}: FAILED ({e})")
         time.sleep(5)  # free-tier Gemini quota is 15 requests/minute
 
-    up = [r for r in results if r["decision"] == "UP"][:10]
-    down = [r for r in results if r["decision"] == "DOWN"][:10]
+    def bucket(decision: str, market: str) -> list[dict]:
+        return [r for r in results if r["decision"] == decision and r["market"] == market][:10]
+
+    up_kr, up_us = bucket("UP", "KR"), bucket("UP", "US")
+    down_kr, down_us = bucket("DOWN", "KR"), bucket("DOWN", "US")
+    up = up_kr + up_us
+    down = down_kr + down_us
 
     os.makedirs("data", exist_ok=True)
     with open("data/predictions_universe.json", "w", encoding="utf-8") as f:
         json.dump(
-            {"up": up, "down": down, "all": results, "failed_count": len(TICKERS) - len(results)},
+            {
+                "up": up, "down": down,
+                "up_kr": up_kr, "up_us": up_us, "down_kr": down_kr, "down_us": down_us,
+                "all": results, "failed_count": len(TICKERS) - len(results),
+            },
             f, indent=2, ensure_ascii=False,
         )
 
-    print(f"UP: {len(up)}, DOWN: {len(down)}, total tracked: {len(results)}")
+    print(
+        f"UP: KR {len(up_kr)}/10, US {len(up_us)}/10 | "
+        f"DOWN: KR {len(down_kr)}/10, US {len(down_us)}/10 | total tracked: {len(results)}"
+    )
 
 
 if __name__ == "__main__":

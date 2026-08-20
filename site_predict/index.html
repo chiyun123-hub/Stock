@@ -70,11 +70,15 @@
   .stat-value { font-size: 16px; font-weight: 600; margin-top: 4px; }
   .disclaimer { font-size: 11px; color: var(--muted); text-align: center; line-height: 1.5; }
   .section-title { font-size: 20px; font-weight: 700; margin: 0 0 16px; }
-  .universe { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 40px; }
-  @media (max-width: 720px) { .universe { grid-template-columns: 1fr; } }
-  .col-title { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; margin-bottom: 12px; padding: 0 4px; }
-  .col-title.up   { color: var(--up); }
-  .col-title.down { color: var(--down); }
+  .prediction-table { margin-bottom: 40px; border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
+  .prediction-table.up   { border-color: rgba(34,197,94,0.3); }
+  .prediction-table.down { border-color: rgba(239,68,68,0.3); }
+  .table-title { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+  .table-title.up   { color: var(--up); }
+  .table-title.down { color: var(--down); }
+  .market-groups { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 720px) { .market-groups { grid-template-columns: 1fr; } }
+  .col-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; margin-bottom: 12px; padding: 0 4px; color: var(--muted); }
   .stock-row {
     display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
     background: var(--card); border: 1px solid var(--border); border-radius: 12px;
@@ -106,7 +110,7 @@
         <span>📰 오늘의 이슈</span><span class="nav-badge">12</span>
       </a>
       <a class="sidebar-nav-item" href="accuracy.html">
-        <span>🎯 예측 정확도</span><span class="nav-badge">66.7%</span>
+        <span>🎯 예측 정확도</span><span class="nav-badge">55.6%</span>
       </a>
       <a class="sidebar-nav-item" href="predictions.html">
         <span>📊 종목 예측</span>
@@ -119,11 +123,11 @@
     <div class="sidebar-title">요약</div>
     <div class="sidebar-stat">
       <div class="sidebar-stat-label">상승 예상</div>
-      <div class="sidebar-stat-value" style="color:var(--up)">10종목</div>
+      <div class="sidebar-stat-value" style="color:var(--up)">20종목</div>
     </div>
     <div class="sidebar-stat">
       <div class="sidebar-stat-label">하락 예상</div>
-      <div class="sidebar-stat-value" style="color:var(--down)">10종목</div>
+      <div class="sidebar-stat-value" style="color:var(--down)">18종목</div>
     </div>
     <a class="sidebar-back" href="index.html">← 대시보드</a>
   </div>
@@ -147,35 +151,70 @@
       <div class="disclaimer">이 예측은 AI가 과거 데이터를 기반으로 생성한 참고용 정보이며,<br>투자 자문이 아닙니다.</div>
     </div>
 
-    <div class="section-title">국내·해외 대형주 20종목 스크리닝</div>
-    <div class="universe">
-      <div class="col">
-        <div class="col-title up">▲ 상승 예상 (10)</div>
-        <a class="stock-row" href="stocks/aapl.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">1</span>Apple<span class="market-badge">US</span></div><div class="stock-reason">최신 종가와 5일 이동평균선(SMA_20)을 상회하며 최근 5일간 4.82%의 상승 추세를 보이고 있기 때문입니다.</div></div><div class="stock-price">$316.83</div></a>
-<a class="stock-row" href="stocks/msft.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">2</span>Microsoft<span class="market-badge">US</span></div><div class="stock-reason">주가가 20일 단순이동평균선(SMA) 위에 위치하여 중기적인 상승 추세를 유지하고 있습니다.</div></div><div class="stock-price">$484.31</div></a>
-<a class="stock-row" href="stocks/amzn.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">3</span>Amazon<span class="market-badge">US</span></div><div class="stock-reason">주가가 20일 이동평균선 위에 위치하며 전반적인 상승 추세를 유지하고 있습니다.</div></div><div class="stock-price">$265.84</div></a>
+    <div class="section-title">국내·해외 대형주 스크리닝</div>
+
+    <div class="prediction-table up">
+      <div class="table-title up">▲ 상승 예상</div>
+      <div class="market-groups">
+        <div class="col">
+          <div class="col-title">🇰🇷 국장 (10/10)</div>
+          <a class="stock-row" href="stocks/005930_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">1</span>삼성전자<span class="market-badge">KR</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 위에 위치하고 최근 5일간 6% 이상 상승하며 단기 상승세를 나타내고 있습니다.</div></div><div class="stock-price">₩271,000.00</div></a>
+<a class="stock-row" href="stocks/000660_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">2</span>SK하이닉스<span class="market-badge">KR</span></div><div class="stock-reason">최근 주가가 20일 이동평균선 위에 위치하고 5일간 강한 상승 흐름을 보이고 있기 때문입니다.</div></div><div class="stock-price">₩1,691,000.00</div></a>
+<a class="stock-row" href="stocks/035420_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">3</span>NAVER<span class="market-badge">KR</span></div><div class="stock-reason">최근 종가가 20일 단순이동평균선(SMA) 위에 위치하고 5일간 상승세를 보이며 단기 상승 모멘텀을 유지하고 있습니다.</div></div><div class="stock-price">₩219,500.00</div></a>
+<a class="stock-row" href="stocks/035720_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">4</span>카카오<span class="market-badge">KR</span></div><div class="stock-reason">20일 이동평균선 위에 위치하고 있어 단기적인 상승 모멘텀이 유지되고 있습니다.</div></div><div class="stock-price">₩38,700.00</div></a>
+<a class="stock-row" href="stocks/051910_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">5</span>LG화학<span class="market-badge">KR</span></div><div class="stock-reason">20일 이동평균선을 상회하고 있어 단기적으로 상승 모멘텀을 유지하고 있습니다.</div></div><div class="stock-price">₩264,000.00</div></a>
+<a class="stock-row" href="stocks/006400_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">6</span>삼성SDI<span class="market-badge">KR</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 위에 위치하고 5일간 상승세를 보이며 단기적인 강세 흐름을 나타내고 있습니다.</div></div><div class="stock-price">₩499,500.00</div></a>
+<a class="stock-row" href="stocks/207940_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">7</span>삼성바이오로직스<span class="market-badge">KR</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 위에 위치하고 최근 5일간 상승세를 보이며 긍정적인 모멘텀을 유지하고 있습니다.</div></div><div class="stock-price">₩1,574,000.00</div></a>
+<a class="stock-row" href="stocks/005380_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">8</span>현대차<span class="market-badge">KR</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 위에 위치하고 5일간 상승세를 보이고 있기 때문입니다.</div></div><div class="stock-price">₩417,500.00</div></a>
+<a class="stock-row" href="stocks/012330_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">9</span>현대모비스<span class="market-badge">KR</span></div><div class="stock-reason">20일 이동평균선을 상회하고 최근 5일간 상승세를 보이며 단기 상승 모멘텀을 유지하고 있습니다.</div></div><div class="stock-price">₩507,000.00</div></a>
+<a class="stock-row" href="stocks/096770_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">10</span>SK이노베이션<span class="market-badge">KR</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 위에 위치하고 최근 5일간 상승세를 보이며 단기적인 상승 모멘텀을 유지하고 있습니다.</div></div><div class="stock-price">₩125,900.00</div></a>
+        </div>
+        <div class="col">
+          <div class="col-title">🇺🇸 미장 (10/10)</div>
+          <a class="stock-row" href="stocks/aapl.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">1</span>Apple<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 위에 위치하고 최근 5일간 4.82% 상승하는 등 단기 상승 흐름을 보이고 있기 때문입니다.</div></div><div class="stock-price">$316.83</div></a>
+<a class="stock-row" href="stocks/msft.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">2</span>Microsoft<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 단순이동평균선(SMA) 위에 위치하여 중기적인 상승 추세를 유지하고 있습니다.</div></div><div class="stock-price">$484.31</div></a>
+<a class="stock-row" href="stocks/amzn.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">3</span>Amazon<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 단순이동평균선(SMA) 위에 위치하며 상승 추세를 유지하고 있기 때문입니다.</div></div><div class="stock-price">$265.84</div></a>
 <a class="stock-row" href="stocks/nvda.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">4</span>Nvidia<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 단순이동평균선(SMA) 위에 위치하여 단기 상승 추세를 유지하고 있기 때문입니다.</div></div><div class="stock-price">$217.56</div></a>
-<a class="stock-row" href="stocks/tsla.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">5</span>Tesla<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 위에 위치하고 5일간 상승세를 보이며 단기 모멘텀이 유지되고 있기 때문입니다.</div></div><div class="stock-price">$351.12</div></a>
-<a class="stock-row" href="stocks/v.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">6</span>Visa<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 단순이동평균선 위에 위치하고 최근 5일간 상승세를 보이며 긍정적인 모멘텀을 유지하고 있습니다.</div></div><div class="stock-price">$365.54</div></a>
-<a class="stock-row" href="stocks/wmt.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">7</span>Walmart<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 단순이동평균선(SMA) 위에 위치해 있어 상승 추세가 유지되고 있음을 보여줍니다.</div></div><div class="stock-price">$114.30</div></a>
-<a class="stock-row" href="stocks/xom.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">8</span>Exxon Mobil<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 위에 위치하고 5일간 상승세를 보이며 강한 단기 상승 모멘텀을 유지하고 있습니다.</div></div><div class="stock-price">$164.77</div></a>
-<a class="stock-row" href="stocks/jnj.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">9</span>Johnson & Johnson<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 위에 위치하고 있으며, 최근 5일간 4.81% 상승하는 등 완연한 상승세를 보이고 있습니다.</div></div><div class="stock-price">$273.41</div></a>
-<a class="stock-row" href="stocks/ma.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">10</span>Mastercard<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 위에 위치하고 최근 5일간 상승 흐름을 보이고 있기 때문입니다.</div></div><div class="stock-price">$573.72</div></a>
-      </div>
-      <div class="col">
-        <div class="col-title down">▼ 하락 예상 (10)</div>
-        <a class="stock-row" href="stocks/googl.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">1</span>Alphabet<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 단순이동평균선(SMA) 아래에 위치해 있어 단기적인 하방 압력이 우세하기 때문입니다.</div></div><div class="stock-price">$344.72</div></a>
-<a class="stock-row" href="stocks/meta.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">2</span>Meta<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 아래에 위치해 있고 5일간 하락세를 보이고 있기 때문입니다.</div></div><div class="stock-price">$546.03</div></a>
-<a class="stock-row" href="stocks/jpm.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">3</span>JPMorgan<span class="market-badge">US</span></div><div class="stock-reason">최근 5일간의 하락세가 단기 조정을 시사하고 있습니다.</div></div><div class="stock-price">$357.26</div></a>
-<a class="stock-row" href="stocks/unh.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">4</span>UnitedHealth<span class="market-badge">US</span></div><div class="stock-reason">최근 주가가 20일 단순이동평균선(SMA)을 밑돌고 5일간 하락세를 보이며 약세를 나타내고 있습니다.</div></div><div class="stock-price">$388.61</div></a>
-<a class="stock-row" href="stocks/pg.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">5</span>Procter & Gamble<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 단순이동평균선(SMA) 아래에 위치해 있어 단기적인 하락 압력을 받고 있기 때문입니다.</div></div><div class="stock-price">$144.38</div></a>
-<a class="stock-row" href="stocks/intc.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">6</span>Intel<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 아래에 위치해 있고 최근 5일간 큰 폭의 하락세를 보이고 있기 때문입니다.</div></div><div class="stock-price">$92.80</div></a>
-<a class="stock-row" href="stocks/amd.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">7</span>AMD<span class="market-badge">US</span></div><div class="stock-reason">주가가 20일 이동평균선 아래에 위치하고 최근 5일간 하락세를 보이고 있기 때문입니다.</div></div><div class="stock-price">$466.42</div></a>
-<a class="stock-row" href="stocks/ba.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">8</span>Boeing<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 아래에 있고 5일간 하락세를 보이고 있기 때문입니다.</div></div><div class="stock-price">$222.20</div></a>
-<a class="stock-row" href="stocks/nke.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">9</span>Nike<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 단순이동평균선(SMA) 아래에 위치해 있어 하락 압박을 받고 있기 때문입니다.</div></div><div class="stock-price">$41.05</div></a>
-<a class="stock-row" href="stocks/000270_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">10</span>기아<span class="market-badge">KR</span></div><div class="stock-reason">최근 5일간의 주가 하락세와 20일 이동평균선에 근접한 가격 흐름을 고려할 때 단기 조정 국면으로 판단됩니다.</div></div><div class="stock-price">₩132,700.00</div></a>
+<a class="stock-row" href="stocks/tsla.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">5</span>Tesla<span class="market-badge">US</span></div><div class="stock-reason">주가가 20일 단순이동평균선(SMA) 위에 위치하고 최근 5일간 7% 이상 상승하며 단기 상승세를 나타내고 있습니다.</div></div><div class="stock-price">$351.12</div></a>
+<a class="stock-row" href="stocks/v.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">6</span>Visa<span class="market-badge">US</span></div><div class="stock-reason">주가가 20일 이동평균선 위에 위치하고 최근 5일간 상승세를 보이며 긍정적인 모멘텀을 유지하고 있습니다.</div></div><div class="stock-price">$365.54</div></a>
+<a class="stock-row" href="stocks/wmt.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">7</span>Walmart<span class="market-badge">US</span></div><div class="stock-reason">주가는 20일 이동평균선 위에 위치하며 상승 추세를 유지하고 있습니다.</div></div><div class="stock-price">$114.30</div></a>
+<a class="stock-row" href="stocks/xom.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">8</span>Exxon Mobil<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 위에 위치하고 5일간 상승세를 보이며 강한 단기 상승 모멘텀을 나타내고 있습니다.</div></div><div class="stock-price">$164.77</div></a>
+<a class="stock-row" href="stocks/jnj.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">9</span>Johnson & Johnson<span class="market-badge">US</span></div><div class="stock-reason">최신 종가(273.41)가 20일 이동평균선(261.40) 위에 위치하고 최근 5일간 4.81% 상승하며 5년 최고가 수준을 기록하고 있기 때문입니다.</div></div><div class="stock-price">$273.41</div></a>
+<a class="stock-row" href="stocks/ma.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">10</span>Mastercard<span class="market-badge">US</span></div><div class="stock-reason">주가가 20일 이동평균선 위에 위치하고 최근 5일간 상승세를 보이며 단기적인 상승 모멘텀을 유지하고 있기 때문입니다.</div></div><div class="stock-price">$573.72</div></a>
+        </div>
       </div>
     </div>
+
+    <div class="prediction-table down">
+      <div class="table-title down">▼ 하락 예상</div>
+      <div class="market-groups">
+        <div class="col">
+          <div class="col-title">🇰🇷 국장 (9/10)</div>
+          <a class="stock-row" href="stocks/000270_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">1</span>기아<span class="market-badge">KR</span></div><div class="stock-reason">최근 5일간 주가가 하락하였고 20일 이동평균선 아래에 위치하고 있습니다.</div></div><div class="stock-price">₩131,100.00</div></a>
+<a class="stock-row" href="stocks/105560_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">2</span>KB금융<span class="market-badge">KR</span></div><div class="stock-reason">최근 종가가 20일 이동평균선 아래에 위치하고 5일간 하락세를 보이고 있기 때문입니다.</div></div><div class="stock-price">₩160,000.00</div></a>
+<a class="stock-row" href="stocks/055550_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">3</span>신한지주<span class="market-badge">KR</span></div><div class="stock-reason">20일 이동평균선 아래에 위치하고 최근 5일간 하락세를 보이며 단기 약세 흐름을 나타내고 있습니다.</div></div><div class="stock-price">₩101,100.00</div></a>
+<a class="stock-row" href="stocks/086790_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">4</span>하나금융지주<span class="market-badge">KR</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 아래에 위치하고 최근 5일간 하락세를 보이고 있기 때문입니다.</div></div><div class="stock-price">₩123,400.00</div></a>
+<a class="stock-row" href="stocks/015760_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">5</span>한국전력<span class="market-badge">KR</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 아래에 위치하고 최근 5일간 10% 이상 하락하며 약세 흐름을 보이고 있기 때문입니다.</div></div><div class="stock-price">₩31,800.00</div></a>
+<a class="stock-row" href="stocks/047050_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">6</span>포스코인터내셔널<span class="market-badge">KR</span></div><div class="stock-reason">최근 5일간의 하락세와 함께 주가가 20일 이동평균선 아래에 위치해 단기 하향 조정 압력이 지속되고 있습니다.</div></div><div class="stock-price">₩52,300.00</div></a>
+<a class="stock-row" href="stocks/030200_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">7</span>KT<span class="market-badge">KR</span></div><div class="stock-reason">최근 주가가 20일 이동평균선 아래에 위치하고 5일간 하락세를 보이고 있기 때문입니다.</div></div><div class="stock-price">₩52,100.00</div></a>
+<a class="stock-row" href="stocks/024110_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">8</span>기업은행<span class="market-badge">KR</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 아래에 위치하고 최근 5일간 하락세를 보이고 있기 때문입니다.</div></div><div class="stock-price">₩19,950.00</div></a>
+<a class="stock-row" href="stocks/316140_ks.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">9</span>우리금융지주<span class="market-badge">KR</span></div><div class="stock-reason">최근 종가가 20일 이동평균선을 밑돌고 5일간 하락세를 보이며 단기 약세 흐름이 뚜렷하기 때문입니다.</div></div><div class="stock-price">₩31,550.00</div></a>
+        </div>
+        <div class="col">
+          <div class="col-title">🇺🇸 미장 (9/10)</div>
+          <a class="stock-row" href="stocks/googl.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">1</span>Alphabet<span class="market-badge">US</span></div><div class="stock-reason">최근 주가가 20일 단순이동평균선(SMA) 아래에 위치해 있어 단기적인 하방 압력이 존재하기 때문입니다.</div></div><div class="stock-price">$344.72</div></a>
+<a class="stock-row" href="stocks/meta.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">2</span>Meta<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 아래에 위치하고 최근 5일간 하락세를 보이며 단기 약세 흐름을 나타내고 있기 때문입니다.</div></div><div class="stock-price">$546.03</div></a>
+<a class="stock-row" href="stocks/jpm.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">3</span>JPMorgan<span class="market-badge">US</span></div><div class="stock-reason">최근 5일간의 주가 하락세와 52주 최고가 부근에서의 조정을 고려할 때 단기 하락 국면에 있습니다.</div></div><div class="stock-price">$357.26</div></a>
+<a class="stock-row" href="stocks/unh.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">4</span>UnitedHealth<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 아래에 위치하고 최근 5일간 하락세를 보이며 약세를 나타내고 있기 때문입니다.</div></div><div class="stock-price">$388.61</div></a>
+<a class="stock-row" href="stocks/pg.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">5</span>Procter & Gamble<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 단순이동평균선(SMA) 아래에 위치해 있어 단기적인 하락 압력을 받고 있기 때문입니다.</div></div><div class="stock-price">$144.38</div></a>
+<a class="stock-row" href="stocks/intc.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">6</span>Intel<span class="market-badge">US</span></div><div class="stock-reason">현재 주가가 20일 이동평균선 아래에 위치해 있고 5일간 큰 폭의 하락세를 보이고 있기 때문입니다.</div></div><div class="stock-price">$92.80</div></a>
+<a class="stock-row" href="stocks/amd.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">7</span>AMD<span class="market-badge">US</span></div><div class="stock-reason">주가가 20일 이동평균선 아래에 위치하고 최근 5일간 하락세를 보이며 단기 약세 흐름을 나타내고 있습니다.</div></div><div class="stock-price">$466.42</div></a>
+<a class="stock-row" href="stocks/ba.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">8</span>Boeing<span class="market-badge">US</span></div><div class="stock-reason">최근 주가가 20일 이동평균선 아래에 위치하고 5일간 하락세를 보이고 있기 때문입니다.</div></div><div class="stock-price">$222.20</div></a>
+<a class="stock-row" href="stocks/nke.html"><div class="stock-main"><div class="stock-ticker"><span class="rank">9</span>Nike<span class="market-badge">US</span></div><div class="stock-reason">최근 주가가 20일 단순이동평균선(SMA) 아래에 위치해 있어 하향 압력이 지속되고 있기 때문입니다.</div></div><div class="stock-price">$41.05</div></a>
+        </div>
+      </div>
+    </div>
+
     <div class="disclaimer">스크리닝 결과는 20일 이동평균·최근 5일 수익률 기반 추세 판단이며, 투자 자문이 아닙니다.</div>
   </div></div>
 </div>
