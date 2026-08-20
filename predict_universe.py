@@ -104,9 +104,12 @@ def main() -> None:
 
     os.makedirs("data", exist_ok=True)
     with open("data/predictions_universe.json", "w", encoding="utf-8") as f:
-        json.dump({"up": up, "down": down, "failed_count": len(TICKERS) - len(results)}, f, indent=2, ensure_ascii=False)
+        json.dump(
+            {"up": up, "down": down, "all": results, "failed_count": len(TICKERS) - len(results)},
+            f, indent=2, ensure_ascii=False,
+        )
 
-    print(f"UP: {len(up)}, DOWN: {len(down)}")
+    print(f"UP: {len(up)}, DOWN: {len(down)}, total tracked: {len(results)}")
 
 
 if __name__ == "__main__":

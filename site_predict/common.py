@@ -65,6 +65,9 @@ def render_sidebar(active: str, date_str: str, up_count: int, down_count: int,
       <a class="{cls('predictions')}" href="{prefix}predictions.html">
         <span>📊 종목 예측</span>
       </a>
+      <a class="{cls('my_stocks')}" href="{prefix}my_stocks.html">
+        <span>💼 내 주식</span>
+      </a>
     </nav>
 
     <div class="sidebar-title">요약</div>

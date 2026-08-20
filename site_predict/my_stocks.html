@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>내 주식</title>
+<style>
+
+  :root {
+    --bg: #0b0f14; --card: #131a22; --border: #232b35;
+    --text: #e8edf2; --muted: #8b98a5; --up: #22c55e; --down: #ef4444; --accent: #3b82f6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+    font-family: -apple-system, "Segoe UI", "Malgun Gothic", Pretendard, sans-serif;
+  }
+  .layout { display: flex; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar { width: 280px; flex-shrink: 0; background: #0e141b; border-right: 1px solid var(--border); padding: 28px 20px; }
+  .brand { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .brand-sub { font-size: 12px; color: var(--muted); margin-bottom: 28px; }
+  .sidebar-title { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+  .sidebar-nav { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+  .sidebar-nav-item {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; font-size: 13px; font-weight: 600; color: var(--text);
+    text-decoration: none; transition: border-color 0.15s;
+  }
+  .sidebar-nav-item:hover { border-color: var(--accent); }
+  .sidebar-nav-item.active { border-color: var(--accent); background: #16202e; }
+  .nav-badge { font-size: 11px; font-weight: 700; color: var(--muted); background: #0e141b; border-radius: 10px; padding: 2px 8px; }
+  .sidebar-stat { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+  .sidebar-stat-label { font-size: 11px; color: var(--muted); }
+  .sidebar-stat-value { font-size: 15px; font-weight: 700; margin-top: 2px; }
+  .sidebar-back { display: inline-block; margin-top: 8px; color: var(--muted); text-decoration: none; font-size: 13px; }
+  .sidebar-back:hover { color: var(--text); }
+
+  /* Main */
+  .main { flex: 1; display: flex; justify-content: center; padding: 40px 32px 60px; }
+  .main-inner { width: 100%; max-width: 900px; }
+
+  @media (max-width: 720px) {
+    .layout { flex-direction: column; }
+    .sidebar { width: 100%; }
+  }
+
+
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 24px; line-height: 1.6; }
+  .alert-banner {
+    display: none; background: rgba(239,68,68,0.12); border: 1px solid var(--down);
+    color: var(--down); border-radius: 12px; padding: 14px 18px; margin-bottom: 20px;
+    font-size: 14px; font-weight: 700;
+  }
+  .add-form {
+    display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px; margin-bottom: 24px;
+  }
+  .add-form label { display: flex; flex-direction: column; font-size: 11px; color: var(--muted); gap: 4px; }
+  .add-form select, .add-form input {
+    background: #0e141b; border: 1px solid var(--border); color: var(--text);
+    border-radius: 8px; padding: 8px 10px; font-size: 13px; font-family: inherit;
+  }
+  .add-form button {
+    background: var(--accent); border: none; color: #fff; font-weight: 700;
+    border-radius: 8px; padding: 9px 18px; font-size: 13px; cursor: pointer; font-family: inherit;
+  }
+  .holdings { display: flex; flex-direction: column; gap: 10px; }
+  .holding-row {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 18px;
+  }
+  .holding-row.sell-signal { border-color: var(--down); background: rgba(239,68,68,0.06); }
+  .holding-name { font-weight: 700; font-size: 15px; }
+  .holding-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .holding-pl { text-align: right; }
+  .holding-pl-pct { font-size: 16px; font-weight: 800; }
+  .holding-decision { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin-top: 4px; display: inline-block; }
+  .holding-decision.up { background: rgba(34,197,94,0.15); color: var(--up); }
+  .holding-decision.down { background: rgba(239,68,68,0.15); color: var(--down); }
+  .remove-btn {
+    background: none; border: 1px solid var(--border); color: var(--muted);
+    border-radius: 6px; padding: 4px 10px; font-size: 11px; cursor: pointer; font-family: inherit;
+  }
+  .remove-btn:hover { border-color: var(--down); color: var(--down); }
+  .pct-up { color: var(--up); }
+  .pct-down { color: var(--down); }
+  .empty { color: var(--muted); font-size: 14px; text-align: center; padding: 40px 0; }
+
+</style>
+</head>
+<body>
+<div class="layout">
+  <div class="sidebar">
+    <div class="brand">📈 주식 예측 대시보드</div>
+    <div class="brand-sub">2026-08-20 기준 · AI 스크리닝</div>
+
+    <div class="sidebar-title">메뉴</div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="issues.html">
+        <span>📰 오늘의 이슈</span><span class="nav-badge">12</span>
+      </a>
+      <a class="sidebar-nav-item" href="accuracy.html">
+        <span>🎯 예측 정확도</span><span class="nav-badge">66.7%</span>
+      </a>
+      <a class="sidebar-nav-item" href="predictions.html">
+        <span>📊 종목 예측</span>
+      </a>
+      <a class="sidebar-nav-item active" href="my_stocks.html">
+        <span>💼 내 주식</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-title">요약</div>
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-label">상승 예상</div>
+      <div class="sidebar-stat-value" style="color:var(--up)">10종목</div>
+    </div>
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-label">하락 예상</div>
+      <div class="sidebar-stat-value" style="color:var(--down)">10종목</div>
+    </div>
+    <a class="sidebar-back" href="index.html">← 대시보드</a>
+  </div>
+  <div class="main"><div class="main-inner">
+    <h1>💼 내 주식</h1>
+    <div class="sub">
+      매수한 종목과 매수가를 등록하면, 오늘의 AI 예측과 비교해 하락 예측 시 매도 신호를 보여드립니다.<br>
+      데이터는 이 브라우저에만 저장됩니다(로그인/서버 없음) — 다른 기기에서는 다시 등록해야 합니다.<br>
+      정적 사이트 특성상 실시간 푸시 알림은 지원하지 않으며, 이 페이지를 열 때마다 최신 신호를 확인할 수 있습니다.
+      추적 가능한 종목은 현재 스크리닝 대상 46개로 제한됩니다.
+    </div>
+
+    <div class="alert-banner" id="alert-banner"></div>
+
+    <form class="add-form" id="add-form">
+      <label>종목
+        <select id="ticker-select"><option value="AMD">AMD (AMD)</option>
+<option value="ABBV">AbbVie (ABBV)</option>
+<option value="GOOGL">Alphabet (GOOGL)</option>
+<option value="AMZN">Amazon (AMZN)</option>
+<option value="AAPL">Apple (AAPL)</option>
+<option value="BA">Boeing (BA)</option>
+<option value="CVX">Chevron (CVX)</option>
+<option value="KO">Coca-Cola (KO)</option>
+<option value="DIS">Disney (DIS)</option>
+<option value="XOM">Exxon Mobil (XOM)</option>
+<option value="HD">Home Depot (HD)</option>
+<option value="INTC">Intel (INTC)</option>
+<option value="JPM">JPMorgan (JPM)</option>
+<option value="JNJ">Johnson & Johnson (JNJ)</option>
+<option value="105560.KS">KB금융 (105560.KS)</option>
+<option value="066570.KS">LG전자 (066570.KS)</option>
+<option value="051910.KS">LG화학 (051910.KS)</option>
+<option value="MA">Mastercard (MA)</option>
+<option value="META">Meta (META)</option>
+<option value="MSFT">Microsoft (MSFT)</option>
+<option value="035420.KS">NAVER (035420.KS)</option>
+<option value="NFLX">Netflix (NFLX)</option>
+<option value="NKE">Nike (NKE)</option>
+<option value="NVDA">Nvidia (NVDA)</option>
+<option value="PEP">PepsiCo (PEP)</option>
+<option value="PG">Procter & Gamble (PG)</option>
+<option value="096770.KS">SK이노베이션 (096770.KS)</option>
+<option value="000660.KS">SK하이닉스 (000660.KS)</option>
+<option value="TSLA">Tesla (TSLA)</option>
+<option value="UNH">UnitedHealth (UNH)</option>
+<option value="V">Visa (V)</option>
+<option value="WMT">Walmart (WMT)</option>
+<option value="000270.KS">기아 (000270.KS)</option>
+<option value="006400.KS">삼성SDI (006400.KS)</option>
+<option value="207940.KS">삼성바이오로직스 (207940.KS)</option>
+<option value="032830.KS">삼성생명 (032830.KS)</option>
+<option value="009150.KS">삼성전기 (009150.KS)</option>
+<option value="005930.KS">삼성전자 (005930.KS)</option>
+<option value="055550.KS">신한지주 (055550.KS)</option>
+<option value="035720.KS">카카오 (035720.KS)</option>
+<option value="047050.KS">포스코인터내셔널 (047050.KS)</option>
+<option value="003670.KS">포스코퓨처엠 (003670.KS)</option>
+<option value="086790.KS">하나금융지주 (086790.KS)</option>
+<option value="015760.KS">한국전력 (015760.KS)</option>
+<option value="012330.KS">현대모비스 (012330.KS)</option>
+<option value="005380.KS">현대차 (005380.KS)</option></select>
+      </label>
+      <label>매수가
+        <input type="number" id="buy-price" step="0.01" min="0" placeholder="예: 262500" required>
+      </label>
+      <button type="submit">추가</button>
+    </form>
+
+    <div class="holdings" id="holdings-list"></div>
+    
+<script>
+(function() {
+  const TICKER_DATA = {"AAPL": {"name": "Apple", "market": "US", "currency": "$", "latest": 316.8299865722656, "predicted": 319.84017040938727, "decision": "UP", "reasoning": "최신 종가와 5일 이동평균선(SMA_20)을 상회하며 최근 5일간 4.82%의 상승 추세를 보이고 있기 때문입니다."}, "MSFT": {"name": "Microsoft", "market": "US", "currency": "$", "latest": 484.30999755859375, "predicted": 482.7512855503885, "decision": "UP", "reasoning": "주가가 20일 단순이동평균선(SMA) 위에 위치하여 중기적인 상승 추세를 유지하고 있습니다."}, "GOOGL": {"name": "Alphabet", "market": "US", "currency": "$", "latest": 344.7200012207031, "predicted": 344.9599097270708, "decision": "DOWN", "reasoning": "현재 주가가 20일 단순이동평균선(SMA) 아래에 위치해 있어 단기적인 하방 압력이 우세하기 때문입니다."}, "AMZN": {"name": "Amazon", "market": "US", "currency": "$", "latest": 265.8399963378906, "predicted": 265.57475619674585, "decision": "UP", "reasoning": "주가가 20일 이동평균선 위에 위치하며 전반적인 상승 추세를 유지하고 있습니다."}, "NVDA": {"name": "Nvidia", "market": "US", "currency": "$", "latest": 217.55999755859372, "predicted": 216.28814343664774, "decision": "UP", "reasoning": "현재 주가가 20일 단순이동평균선(SMA) 위에 위치하여 단기 상승 추세를 유지하고 있기 때문입니다."}, "META": {"name": "Meta", "market": "US", "currency": "$", "latest": 546.030029296875, "predicted": 539.8837691088463, "decision": "DOWN", "reasoning": "현재 주가가 20일 이동평균선 아래에 위치해 있고 5일간 하락세를 보이고 있기 때문입니다."}, "TSLA": {"name": "Tesla", "market": "US", "currency": "$", "latest": 351.1199951171875, "predicted": 356.124929630341, "decision": "UP", "reasoning": "현재 주가가 20일 이동평균선 위에 위치하고 5일간 상승세를 보이며 단기 모멘텀이 유지되고 있기 때문입니다."}, "JPM": {"name": "JPMorgan", "market": "US", "currency": "$", "latest": 357.260009765625, "predicted": 355.70670461394104, "decision": "DOWN", "reasoning": "최근 5일간의 하락세가 단기 조정을 시사하고 있습니다."}, "V": {"name": "Visa", "market": "US", "currency": "$", "latest": 365.5400085449219, "predicted": 366.80154088692166, "decision": "UP", "reasoning": "현재 주가가 20일 단순이동평균선 위에 위치하고 최근 5일간 상승세를 보이며 긍정적인 모멘텀을 유지하고 있습니다."}, "WMT": {"name": "Walmart", "market": "US", "currency": "$", "latest": 114.3000030517578, "predicted": 113.96290514453817, "decision": "UP", "reasoning": "현재 주가가 20일 단순이동평균선(SMA) 위에 위치해 있어 상승 추세가 유지되고 있음을 보여줍니다."}, "UNH": {"name": "UnitedHealth", "market": "US", "currency": "$", "latest": 388.6099853515625, "predicted": 385.314942604427, "decision": "DOWN", "reasoning": "최근 주가가 20일 단순이동평균선(SMA)을 밑돌고 5일간 하락세를 보이며 약세를 나타내고 있습니다."}, "XOM": {"name": "Exxon Mobil", "market": "US", "currency": "$", "latest": 164.77000427246094, "predicted": 166.01910810012157, "decision": "UP", "reasoning": "현재 주가가 20일 이동평균선 위에 위치하고 5일간 상승세를 보이며 강한 단기 상승 모멘텀을 유지하고 있습니다."}, "JNJ": {"name": "Johnson & Johnson", "market": "US", "currency": "$", "latest": 273.4100036621094, "predicted": 276.01450907157204, "decision": "UP", "reasoning": "현재 주가가 20일 이동평균선 위에 위치하고 있으며, 최근 5일간 4.81% 상승하는 등 완연한 상승세를 보이고 있습니다."}, "PG": {"name": "Procter & Gamble", "market": "US", "currency": "$", "latest": 144.3800048828125, "predicted": 144.44225198840292, "decision": "DOWN", "reasoning": "현재 주가가 20일 단순이동평균선(SMA) 아래에 위치해 있어 단기적인 하락 압력을 받고 있기 때문입니다."}, "MA": {"name": "Mastercard", "market": "US", "currency": "$", "latest": 573.719970703125, "predicted": 576.5981122460878, "decision": "UP", "reasoning": "현재 주가가 20일 이동평균선 위에 위치하고 최근 5일간 상승 흐름을 보이고 있기 때문입니다."}, "HD": {"name": "Home Depot", "market": "US", "currency": "$", "latest": 344.29998779296875, "predicted": 344.4916427241207, "decision": "UP", "reasoning": "최신 종가가 20일 단순이동평균선(SMA) 위에 위치하고 5일간 완만한 상승세를 보이고 있기 때문입니다."}, "CVX": {"name": "Chevron", "market": "US", "currency": "$", "latest": 205.75999450683597, "predicted": 208.00490120830884, "decision": "UP", "reasoning": "최근 가격이 20일 이동평균선을 상회하고 5일 동안 5.57% 상승하는 등 강한 상승세를 보이고 있습니다."}, "ABBV": {"name": "AbbVie", "market": "US", "currency": "$", "latest": 265.9700012207031, "predicted": 269.58132123143156, "decision": "UP", "reasoning": "현재 주가가 20일 단순이동평균선(SMA) 위에 위치하고 최근 5일간 6% 넘는 상승률을 기록하며 52주 신고가(5년 최고가)를 경신했기 때문입니다."}, "KO": {"name": "Coca-Cola", "market": "US", "currency": "$", "latest": 90.3499984741211, "predicted": 91.1010379053997, "decision": "UP", "reasoning": "최근 종가가 20일 단순이동평균선(SMA) 위에 위치하고 5일간 4% 이상 상승하며 신고가(5년 최고가)를 기록했기 때문입니다."}, "PEP": {"name": "PepsiCo", "market": "US", "currency": "$", "latest": 142.5800018310547, "predicted": 143.38116881303534, "decision": "UP", "reasoning": "최근 가격이 20일 이동평균선 위에 위치하고 5일 동안 상승세를 보이고 있기 때문입니다."}, "NFLX": {"name": "Netflix", "market": "US", "currency": "$", "latest": 80.22000122070312, "predicted": 81.51036497022722, "decision": "UP", "reasoning": "최근 종가가 20일 이동평균선 위에 위치하고 5일간 8% 이상 상승하며 강한 상승세를 보이고 있습니다."}, "DIS": {"name": "Disney", "market": "US", "currency": "$", "latest": 106.93000030517578, "predicted": 107.71125787969338, "decision": "UP", "reasoning": "현재 주가가 20일 이동평균선 위에 위치하고 최근 5일간 상승세를 보이며 긍정적인 모멘텀을 나타내고 있습니다."}, "INTC": {"name": "Intel", "market": "US", "currency": "$", "latest": 92.8000030517578, "predicted": 91.31109691462633, "decision": "DOWN", "reasoning": "현재 주가가 20일 이동평균선 아래에 위치해 있고 최근 5일간 큰 폭의 하락세를 보이고 있기 때문입니다."}, "AMD": {"name": "AMD", "market": "US", "currency": "$", "latest": 466.4200134277344, "predicted": 463.5297952545298, "decision": "DOWN", "reasoning": "주가가 20일 이동평균선 아래에 위치하고 최근 5일간 하락세를 보이고 있기 때문입니다."}, "BA": {"name": "Boeing", "market": "US", "currency": "$", "latest": 222.1999969482422, "predicted": 220.4543300412469, "decision": "DOWN", "reasoning": "현재 주가가 20일 이동평균선 아래에 있고 5일간 하락세를 보이고 있기 때문입니다."}, "NKE": {"name": "Nike", "market": "US", "currency": "$", "latest": 41.04999923706055, "predicted": 41.17239900456535, "decision": "DOWN", "reasoning": "현재 주가가 20일 단순이동평균선(SMA) 아래에 위치해 있어 하락 압박을 받고 있기 때문입니다."}, "005930.KS": {"name": "삼성전자", "market": "KR", "currency": "₩", "latest": 262500.0, "predicted": 264269.9459930223, "decision": "UP", "reasoning": "현재 주가가 20일 단순이동평균선(SMA) 위에 위치하고 최근 5일간 상승세를 보이며 긍정적인 모멘텀을 유지하고 있습니다."}, "000660.KS": {"name": "SK하이닉스", "market": "KR", "currency": "₩", "latest": 1645000.0, "predicted": 1678342.9765235314, "decision": "UP", "reasoning": "현재 주가가 20일 이동평균선 위에 위치하고 최근 5일간 9.38%의 강한 상승세를 보이고 있기 때문입니다."}, "035420.KS": {"name": "NAVER", "market": "KR", "currency": "₩", "latest": 217000.0, "predicted": 217486.75540986285, "decision": "UP", "reasoning": "최근 주가가 20일 이동평균선 위에 위치하고 5일 동안 완만한 상승세를 보이고 있기 때문입니다."}, "035720.KS": {"name": "카카오", "market": "KR", "currency": "₩", "latest": 38750.0, "predicted": 38606.90955218526, "decision": "UP", "reasoning": "단기 이동평균선(SMA 20) 위에 주가가 위치해 있으며 5년 장기 박스권 하단 부근에서 반등할 가능성이 보입니다."}, "051910.KS": {"name": "LG화학", "market": "KR", "currency": "₩", "latest": 273500.0, "predicted": 273174.9630626807, "decision": "UP", "reasoning": "현재 주가가 20일 이동평균선 위에 위치하여 단기 상승 추세를 유지하고 있기 때문입니다."}, "006400.KS": {"name": "삼성SDI", "market": "KR", "currency": "₩", "latest": 510000.0, "predicted": 515462.40934876446, "decision": "UP", "reasoning": "현재 주가가 20일 이동평균선 위에 위치하고 최근 5일간 상승세를 보이며 긍정적인 모멘텀을 나타내고 있습니다."}, "207940.KS": {"name": "삼성바이오로직스", "market": "KR", "currency": "₩", "latest": 1551000.0, "predicted": 1551464.1946641335, "decision": "UP", "reasoning": "최신 종가가 20일 이동평균선 위에 위치하고 단기 상승 흐름을 보이고 있습니다."}, "005380.KS": {"name": "현대차", "market": "KR", "currency": "₩", "latest": 415500.0, "predicted": 417164.28732440603, "decision": "UP", "reasoning": "현재 주가가 20일 이동평균선 위에 위치하고 최근 5일간 상승세를 보이며 긍정적인 모멘텀을 나타내고 있습니다."}, "000270.KS": {"name": "기아", "market": "KR", "currency": "₩", "latest": 132700.0, "predicted": 132167.73250580582, "decision": "DOWN", "reasoning": "최근 5일간의 주가 하락세와 20일 이동평균선에 근접한 가격 흐름을 고려할 때 단기 조정 국면으로 판단됩니다."}, "105560.KS": {"name": "KB금융", "market": "KR", "currency": "₩", "latest": 162200.0, "predicted": 161464.4828768718, "decision": "DOWN", "reasoning": "최근 종가가 20일 이동평균선 아래에 위치하고 5일간 하락세를 보이고 있기 때문입니다."}, "055550.KS": {"name": "신한지주", "market": "KR", "currency": "₩", "latest": 101300.0, "predicted": 100829.50509371466, "decision": "DOWN", "reasoning": "최근 종가가 20일 이동평균선 아래에 위치하고 5일간 주가가 하락세를 보이고 있기 때문입니다."}, "012330.KS": {"name": "현대모비스", "market": "KR", "currency": "₩", "latest": 508000.0, "predicted": 510354.0431685157, "decision": "UP", "reasoning": "현재 주가가 20일 이동평균선 위에 위치하고 최근 5일간 상승세를 보이며 단기 상승 추세를 나타내고 있습니다."}, "096770.KS": {"name": "SK이노베이션", "market": "KR", "currency": "₩", "latest": 126100.0, "predicted": 126908.58919280587, "decision": "UP", "reasoning": "현재 주가가 20일 이동평균선 위에 위치하고 최근 5일간 상승세를 보이며 단기 상승 모멘텀을 유지하고 있습니다."}, "066570.KS": {"name": "LG전자", "market": "KR", "currency": "₩", "latest": 202000.0, "predicted": 201480.96305300345, "decision": "UP", "reasoning": "최근 가격이 20일 이동평균선 위에 위치하며 중기적인 상승 추세를 유지하고 있기 때문입니다."}, "003670.KS": {"name": "포스코퓨처엠", "market": "KR", "currency": "₩", "latest": 163300.0, "predicted": 164066.08857821097, "decision": "UP", "reasoning": "현재 주가가 20일 이동평균선 위에 위치하고 최근 5일간 상승세를 보이며 단기적인 상승 모멘텀을 유지하고 있습니다."}, "086790.KS": {"name": "하나금융지주", "market": "KR", "currency": "₩", "latest": 123700.0, "predicted": 122906.44363176955, "decision": "DOWN", "reasoning": "현재 주가가 20일 이동평균선 아래에 위치하고 최근 5일간 하락세를 보이고 있기 때문입니다."}, "015760.KS": {"name": "한국전력", "market": "KR", "currency": "₩", "latest": 31900.0, "predicted": 31255.919698013462, "decision": "DOWN", "reasoning": "최근 20일 이동평균선 아래에 위치하고 5일간 큰 폭의 하락세를 보이고 있기 때문입니다."}, "032830.KS": {"name": "삼성생명", "market": "KR", "currency": "₩", "latest": 296500.0, "predicted": 295963.46119609807, "decision": "UP", "reasoning": "최근 주가가 20일 이동평균선 위에 위치하여 단기적인 상승 모멘텀을 유지하고 있습니다."}, "009150.KS": {"name": "삼성전기", "market": "KR", "currency": "₩", "latest": 1408000.0, "predicted": 1426313.3170690304, "decision": "UP", "reasoning": "현재 주가가 20일 이동평균선 위에 위치하고 최근 5일간 상승세를 보이며 단기적인 상승 모멘텀을 유지하고 있습니다."}, "047050.KS": {"name": "포스코인터내셔널", "market": "KR", "currency": "₩", "latest": 52100.0, "predicted": 51688.96487763786, "decision": "DOWN", "reasoning": "최근 5일간의 하락세와 20일 이동평균선 아래에 위치한 주가 흐름을 고려할 때 단기 하락 추세가 이어지고 있습니다."}};
+  const STORAGE_KEY = "myStocksV1";
+
+  function loadHoldings() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch (e) { return []; }
+  }
+  function saveHoldings(list) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  }
+
+  function render() {
+    const holdings = loadHoldings();
+    const container = document.getElementById("holdings-list");
+    const banner = document.getElementById("alert-banner");
+
+    if (holdings.length === 0) {
+      container.innerHTML = '<div class="empty">아직 등록한 종목이 없습니다. 위에서 매수한 종목과 매수가를 추가해보세요.</div>';
+      banner.style.display = "none";
+      return;
+    }
+
+    const sellSignals = [];
+    container.innerHTML = holdings.map((h, idx) => {
+      const info = TICKER_DATA[h.ticker] || {};
+      const currency = info.currency || "$";
+      const current = info.latest;
+      const plPct = current ? ((current - h.buyPrice) / h.buyPrice * 100) : null;
+      const isDown = info.decision === "DOWN";
+      if (isDown) sellSignals.push(info.name || h.ticker);
+
+      const plHtml = plPct !== null
+        ? `<div class="holding-pl-pct ${plPct >= 0 ? 'pct-up' : 'pct-down'}">${plPct >= 0 ? '+' : ''}${plPct.toFixed(2)}%</div>`
+        : '<div class="holding-pl-pct">-</div>';
+      const decisionHtml = info.decision
+        ? `<span class="holding-decision ${info.decision === 'UP' ? 'up' : 'down'}">${info.decision === 'UP' ? '▲ 상승 예측' : '▼ 하락 예측 · 매도 검토'}</span>`
+        : '<span class="holding-decision">예측 대기</span>';
+
+      return `<div class="holding-row ${isDown ? 'sell-signal' : ''}">
+        <div>
+          <div class="holding-name">${info.name || h.ticker}</div>
+          <div class="holding-meta">매수가 ${currency}${h.buyPrice.toLocaleString()} · 현재가 ${current ? currency + current.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) : '조회 불가'}</div>
+          <div class="holding-meta">${info.reasoning || ''}</div>
+          ${decisionHtml}
+        </div>
+        <div class="holding-pl">
+          ${plHtml}
+          <button class="remove-btn" data-idx="${idx}">삭제</button>
+        </div>
+      </div>`;
+    }).join("");
+
+    container.querySelectorAll(".remove-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const list = loadHoldings();
+        list.splice(parseInt(btn.dataset.idx, 10), 1);
+        saveHoldings(list);
+        render();
+      });
+    });
+
+    if (sellSignals.length > 0) {
+      banner.style.display = "block";
+      banner.textContent = `⚠ 매도 신호: ${sellSignals.join(", ")} — 오늘 하락 예측되었습니다. 매도를 검토해보세요.`;
+    } else {
+      banner.style.display = "none";
+    }
+  }
+
+  document.getElementById("add-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const ticker = document.getElementById("ticker-select").value;
+    const buyPrice = parseFloat(document.getElementById("buy-price").value);
+    if (!ticker || !buyPrice || buyPrice <= 0) return;
+    const list = loadHoldings();
+    list.push({ ticker, buyPrice, addedAt: new Date().toISOString() });
+    saveHoldings(list);
+    document.getElementById("buy-price").value = "";
+    render();
+  });
+
+  render();
+})();
+</script>
+
+  </div></div>
+</div>
+</body>
+</html>
