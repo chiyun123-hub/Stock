@@ -82,7 +82,7 @@ def main() -> None:
             results.append(result)
         except Exception as e:
             print(f"{ticker}: FAILED ({e})")
-        time.sleep(1)  # be gentle with the Gemini API rate limit
+        time.sleep(5)  # free-tier Gemini quota is 15 requests/minute
 
     up = [r for r in results if r["decision"] == "UP"][:10]
     down = [r for r in results if r["decision"] == "DOWN"][:10]
