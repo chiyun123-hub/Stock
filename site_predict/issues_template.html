@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>오늘의 이슈</title>
+<style>
+  :root {
+    --bg: #0b0f14; --card: #131a22; --border: #232b35;
+    --text: #e8edf2; --muted: #8b98a5; --up: #22c55e; --down: #ef4444; --accent: #3b82f6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+    font-family: -apple-system, "Segoe UI", "Malgun Gothic", Pretendard, sans-serif;
+    padding: 40px 20px 60px;
+  }
+  .page { max-width: 720px; margin: 0 auto; }
+  .back-link { display: inline-block; margin-bottom: 20px; color: var(--muted); text-decoration: none; font-size: 13px; }
+  .back-link:hover { color: var(--text); }
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+  .news-list { list-style: none; margin: 0; padding: 0; }
+  .news-item {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px 18px; margin-bottom: 12px;
+  }
+  .news-item a { color: var(--text); text-decoration: none; display: block; }
+  .news-item a:hover { color: var(--accent); }
+  .news-ticker {
+    display: inline-block; font-size: 11px; font-weight: 700; color: var(--accent);
+    border: 1px solid var(--accent); border-radius: 4px; padding: 2px 6px; margin-right: 8px;
+  }
+  .news-title { font-size: 14px; line-height: 1.5; }
+  .empty { color: var(--muted); font-size: 14px; text-align: center; padding: 60px 0; }
+</style>
+</head>
+<body>
+<div class="page">
+  <a class="back-link" href="index.html">← 대시보드로 돌아가기</a>
+  <h1>📰 오늘의 이슈</h1>
+  <div class="sub">{{DATE}} · 예측 대상 종목 관련 뉴스 {{COUNT}}건</div>
+  {{NEWS_LIST}}
+</div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>오늘의 이슈</title>
+<style>
+  :root {
+    --bg: #0b0f14; --card: #131a22; --border: #232b35;
+    --text: #e8edf2; --muted: #8b98a5; --up: #22c55e; --down: #ef4444; --accent: #3b82f6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+    font-family: -apple-system, "Segoe UI", "Malgun Gothic", Pretendard, sans-serif;
+    padding: 40px 20px 60px;
+  }
+  .page { max-width: 720px; margin: 0 auto; }
+  .back-link { display: inline-block; margin-bottom: 20px; color: var(--muted); text-decoration: none; font-size: 13px; }
+  .back-link:hover { color: var(--text); }
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+  .news-list { list-style: none; margin: 0; padding: 0; }
+  .news-item {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px 18px; margin-bottom: 12px;
+  }
+  .news-item a { color: var(--text); text-decoration: none; display: block; }
+  .news-item a:hover { color: var(--accent); }
+  .news-ticker {
+    display: inline-block; font-size: 11px; font-weight: 700; color: var(--accent);
+    border: 1px solid var(--accent); border-radius: 4px; padding: 2px 6px; margin-right: 8px;
+  }
+  .news-title { font-size: 14px; line-height: 1.5; }
+  .empty { color: var(--muted); font-size: 14px; text-align: center; padding: 60px 0; }
+</style>
+</head>
+<body>
+<div class="page">
+  <a class="back-link" href="index.html">← 대시보드로 돌아가기</a>
+  <h1>📰 오늘의 이슈</h1>
+  <div class="sub">2026-08-20 · 예측 대상 종목 관련 뉴스 20건</div>
+  <ul class="news-list"><li class="news-item"><a href="https://news.google.com/rss/articles/CBMieEFVX3lxTFBTbGx5enhKaEY0c012Z2FXUDlkSEktTFVMMlRjbmZLUGNTYTUwaE9QZ3JzWkdIVkRvQnIzLWkyeEdYdG5IWmtJTEEzMTg1UGpKM1Q0dHl1THBfQVRsdDJ1UHo5ZjRoSE80WTRGWXF2U090NmMwZjctUA?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">AAPL</span><span class="news-title">Apple Perpetual Futures 주식 뉴스 (AAPL/USD) - Investing.com 한국어</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTE5FZVpGV1pKNXhtZGJNWkU4ZEFpMk56Sm1KS1Y0QmhLN0tORjQxTmxNeW1sY0hQRzRFR3dnSVNtZFFkcmVocGtXRnhvaEY4SG9OV1ZuVTFIZzdUdjZF?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">AAPL</span><span class="news-title">[미국 특징주] 애플의 '탈(脫)AI' 포지션, 갑자기 주가의 발목을 잡다 - 뉴스핌</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMilgFBVV95cUxPa0ppdkIyRGQ5ckNBdS1mVlhTVnhlR21CTmFxV19tUFRNMnd1aThqUWJxVXpzakdaREl3a2xwc3hQZFozZFFiS0hkc0NjcFBscE1Hb2tyaXJNVUk1YUhHZDhmWGhUbnVQTFNUbExqM0JfWkJwQkd2NnkxMENpZFpDcTJJbm1PdFBOQ05GYkhlbzRaZTNJLVHSAZYBQVVfeXFMT2tKaXZCMkRkOXJDQXUtZlZYU1Z4ZUdtQk5hcVdfbVBUTTJ3dWk4alFicVV6c2pHWkRJd2tscHN4UGRaM2RRYktIZHNDY3BQbHBNR29rcmlyTVVJNWFIR2Q4ZlhoVG51UExTVGxMajNCX1pCcEJHdjZ5MTBDaWRaQ3EySW5tT3RQTkNORmJIZW80WmUzSS1R?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">MSFT</span><span class="news-title">마이크로소프트 주가가 보여 주는 AI 인프라 주식의 핵심 포인트 - simplywall.st</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxNeGREOHZoZlFrSDdZSVVSbzRHbFVkd3JDc2JuU05ZYnVwQ3RFN0puTzlBWldweklEd2NXR2xnbTdxTWRGNmZWUmYyQW9veThnMldhNFM1OFBkWWFXMWVZYzZiNkVyZWJoTFlsU2ZCWnJHZTFaQkwyTnREUkJoQ0pXcGFvRm5XWENWYW5fU1UtWQ?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">MSFT</span><span class="news-title">마이크로소프트(MSFT) 주식, 8월 17일 3.17% 하락: 변동 원인 - tradingkey.com</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMieEFVX3lxTE1RUDY4TV9PaE5pSDBzLVBWVjZKOHNiQkpPRFVZVkhvNndEV2N3Um5yLXotUElGUFhabWpNcFRvQ1k1aEoxNWZTTDRlT09ISmdLQl9CZkpnTnZVOWpGdkx0NzZYSk1fZkg4ZEpwdnFOS0Y4UEZqZGZTcA?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">AMZN</span><span class="news-title">Amazon.com Perpetual Futures 주식 뉴스 (AMZN/USD) - Investing.com 한국어</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxOSEEySk5acjBoeVpqaW9NMjFVWmtsUXcyTlVxd2hIWFN0YmlTdUdPSjQwcTJ4WGdOWmQwYjFfbFNzZkJ1VVZvTjY0QVhBMnhnNGp1S0FtNzE5eUd5R0JadlZCVUd6ZHRqQ3NidXBEQ3poN0g2RVlzdGpFanFvQ2h3aDRBU3ZmcU4xWUd0S2Uyaw?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">AMZN</span><span class="news-title">아마존(AMZN) 주식, 7월 31일 14.38% 상승: 변동 원인 - tradingkey.com</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE9uR0xyVkhUV0dzVjg3NmcwbHdISEpKc09VZU4xQVNMU3hleE9iVDJHYWtvSEc0RWRQLVV3NE0tQlZWWFh6TjRQanRJOXQ3WmNCMGlTa01HRV9Qd3PSAWBBVV95cUxNNzFlUnJpSERQcHBzWk5scVRBV01Xb3ZlSnJWUVdEZ2g4ak51a0VDcDJLX2FMQzNGY25zemF6a1ZLcC0yRldsY1lPbEtFV3VRNTdodVVQSE5WUDNQVHNBTHc?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">NVDA</span><span class="news-title">엔비디아, 경쟁사 인텔 주식 42조원어치 보유 - 연합뉴스</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMiR0FVX3lxTE9PaldaaWJQeTBMLXpacUdNSWdnaHNJYTF5eGNHRzJpNF9jX21JajZOck9sT213aVRWMG1ZUEVCWUhYS3pBVU9j?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">NVDA</span><span class="news-title">엔비디아, 경쟁사 인텔 주식 42조원어치 보유 - 아이뉴스24</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxORjNEV3hEOXl1N0l4RzV0WUduV2hyeEdnZURKWXI3c1V3S1RwRWZxY1VCa1NFTzRDOEVEaFp1ZHhjUzZUcXZ6N0FFRXdkc1RxTnBhNUUtRkYzMjZBNWJEWVJaTXBPRWRsOHB2VVgwN0RLaXN4MjRtblg4dlMxYm5MaDhMancwd0ZJaHV1b1kzSQ?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">TSLA</span><span class="news-title">테슬라(TSLA) 주식, 8월 19일 3.08% 상승: 핵심 원인 공개 - tradingkey.com</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxNalJVZjJqbVczeFRSTDhJZGh1N19vUkZwS042T0sxODFlMkJZWHhreUhseUVqV3c4NXNqX21uZjhoaElUSGtqNGRSVWdta2VGRWViSUFMT3ZVeUJ5U1FWVWI1ajFDNXdDRjhib0RIYXBOb0F5T2wzU1ItWGQxa25UN1hLM0Y4UHdYdklMQm42Z3VjVm1ERDJsM0lndGowdkVfZjFzcTE1WWZRZ0xlLW9mN2w2dzFPZw?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">TSLA</span><span class="news-title">테슬라 주가, 52주 최고가 대비 32% 하락… 사이버캡 출시가 의미하는 향후 전망은? - TIKR.com</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMilgFBVV95cUxNeWxqSWFSa0s2WkJlOU9DNld6NUVPWGU2X3JwUDNwcDZONmdXZXVQZ21ibnZSU0RiS2NiMElPYmdHT0Q4Tzc5czl5TWl4M3VId0d0WDNSYzZYdWF2WmZzRGszYTRWNm1ZR21rT29TU3dFbi1jQk5GQTVoWUV3M192S3BiSVZUUHdDTXNUWGtmMzlLWWRfYVE?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">JPM</span><span class="news-title">JP모건, 디지털 인프라 강세에 힘입어 라이엇 플랫폼 목표주가를 22달러로 상향 - TIKR.com</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMilAFBVV95cUxQZDBvbWlLSEtQckdsVjdZZ0o4dmtQRFR0ai1Za2VXc2JtZ2c0V2VyeDVvSHZ4SVRFZlFCdFkwVmlETS16UUMyOUlIVHNuQm11SHJGdjdXajJtZFRYUUUxT1lQWXgxM2t6N2pmREhnd3NycHdGMmxMNUFwOUU1MkhRdjVLb3RVMGwzV3JLY0RKQ1hkaGQ20gGUAUFVX3lxTFBkMG9taUtIS1ByR2xWN1lnSjh2a1BEVHRqLVlrZVdzYm1nZzRXZXJ4NW9IdnhJVEVmUUJ0WTBWaURNLXpRQzI5SUhUc25CbXVIckZ2N1dqMm1kVFhRRTFPWVBZeDEza3o3amZESGd3c3Jwd0YybEw1QXA5RTUySFF2NUtvdFUwbDNXcktjREpDWGRoZDY?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">JPM</span><span class="news-title">JPMorgan Chase(JPM) 주식은 매수 기회인가, 아니면 이미 적정 가격에 도달했는가? - simplywall.st</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMiowFBVV95cUxNSTB1bUVhSndqa3ZRcDFUSVIxSjgtMFZKMEM1S1M3ZHowa2EyX1dpelhnYjZyNWg3Y3N2ZjQtVHBxTGxIR0x5MElpVml4cW52SHo2VHJHa1BSSmtsTmRqRVVnNEZqeDNjMWowTkMxN1Bid3Bldy1WY0lEN2p4TzFtMEpEQTdoRFE3M2tYMG0zVHlCbndKaDFmdTFxVHdyVmY0Qjdv0gGjAUFVX3lxTE1JMHVtRWFKd2prdlFwMVRJUjFKOC0wVkowQzVLUzdkejBrYTJfV2l6WGdiNnI1aDdjc3ZmNC1UcHFMbEhHTHkwSWlWaXhxbnZIejZUckdrUFJKa2xOZGpFVWc0Rmp4M2MxajBOQzE3UGJ3cGV3LVZjSUQ3anhPMW0wSkRBN2hEUTcza1gwbTNUeUJud0poMWZ1MXFUd3JWZjRCN28?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">V</span><span class="news-title">비자 주식이 보여주는 미국 스테이블코인 결제 인프라의 다음 기회 - simplywall.st</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMipgFBVV95cUxQck9tbGJqdlNydzFUMjNaUlZiUXpqOHRkLUFFcmltM3p2Zl8zLVJ5d1lTVFNONTBxN2dDeHBDUkRMOWhRem9JVmtMMzZqMFlTaFpNTG9NQ3JQb1AtR1BnWEFyQ1FqUUNYY1VRR2txdkhMRkpYMU1ablFDemJwTU5lRWk0R2lIMk9SYy1OVElWalhpbFdrdDdHbW4xUG1hS2RYSW1OTVZn?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">V</span><span class="news-title">비자 주가, 52주 최고가 대비 16% 하락… 2026년에는 드디어 매수 타이밍일까? - TIKR.com</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBoY2JVSVdSNnJuWVg4Um5PNFRXSzlUclN5bVZmeG4xTlYtdzNaT2t4Rm50NHpBb0lhYjl2a0t5MXF0SVM5MU5VaE5aRGNVNG1JNjc5cUpXUzgxdw?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">WMT</span><span class="news-title">"장사 잘되는데 주가는 뚝”…월마트의 이상한 여름 - 한국경제</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMiogFBVV95cUxOZ2Q5aWMyMDZJRVhmSk5hcFpROEF4YWZ5eFpyVjh3clpFNjdGX2J2LWR6UmU3YUE4amFaRzBwOUhzRklweTR1emhENUNHSnRnMmpIeFc4SXItaEFIWC1FWGppTkJ2ZTAwaHhiMWFIdHNsQ0pRZ2RsbW9JQm55QXE3VnFodFhWYjE1QWFKbWVMM0p0cDUxRVVTZlczcFg1T0dnQlE?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">WMT</span><span class="news-title">월마트 주가, 2026년 내내 제자리걸음… 정체기를 깰 촉저는 무엇인가? - TIKR.com</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMiT0FVX3lxTFBoQkswUGJPcU1UOHlIZkt3WG9KUF9NWGNxU0xIbVpqNnlnOHhpT3luR1NSbUJOZEFjelBpZ3JEM3RKbWFmT0VEdW9xQUEtakU?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">005930.KS</span><span class="news-title">“‘불닭’으로 번 돈, 삼성전자 6억 넣어 10억 됐다”…4개월 만에 평가액 77% 뛰어 - v.daum.net</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE9naEppM08xdmdTZkx0S29WUmdrcDREdVA1c3RBaVNlNUJPRU13QVFNWmZZMmVUaElXQmFOVExidzJkcUxSMDZBZUU4d2t5Rks1U2VmVWRNVnk5OUotem00RTJTaFJJa3JoOEdEQlJYRHhWZzUxdmFJ?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">005930.KS</span><span class="news-title">삼성전자 주식, 오늘 왜 폭락했나? - Investing.com 한국어</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBHaG92bjl3dVlyZW1aT01nQW55cTdHRVhIczloZVVQTlV4VXM5bURjOXBVYmlwemdUVkNiMEZnMnRmT29YZzFveGtYYlFSV0RvdWhDVjR6aV9EQdIBX0FVX3lxTE9SNi1qSHBMaGZwV2MzOGl2em9XajNlZnNxRkFGY1VpOEw5MVBjVHZPZENidVBESUlYdDRrdXdLVjczbm1YcjQ2Vy1TLV9BaEJydHRtZjJ1T3JqTS04ZVVv?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">000660.KS</span><span class="news-title">SK하이닉스 40조 자사주 취득·소각 “주주가치 제고” - 경향신문</span></a></li>
+<li class="news-item"><a href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1oWXFSVVJ4RFNZZ1llajFSZTJHQklHVXZBRVRpbVA4MFVpbUs4dWdqeUtLOU5SVkZUbUpCdzhXZ28xVnhkcGdDbkFkbnlUczQ?oc=5" target="_blank" rel="noopener noreferrer"><span class="news-ticker">000660.KS</span><span class="news-title">SK하이닉스 성과급 40% 주식으로 받는다…노사 임단협 잠정합의 - v.daum.net</span></a></li></ul>
+</div>
+</body>
+</html>

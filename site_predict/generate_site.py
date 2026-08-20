@@ -44,11 +44,21 @@ def render_issues(headlines: list[dict]) -> str:
     if not headlines:
         return '<div class="issue-empty">뉴스 소스 요청 제한으로 지금은 표시할 이슈가 없습니다.</div>'
     items = "\n".join(
-        f'<li class="issue-item"><a href="{h["link"]}" target="_blank" rel="noopener noreferrer">'
+        # No target="_blank": some browsers/environments block or silently
+        # drop window.open()-style navigation on synthetic clicks, so a
+        # plain same-tab link is the version that reliably opens.
+        f'<li class="issue-item"><a href="{h["link"]}" rel="noopener noreferrer">'
         f'<span class="issue-ticker">{h["ticker"]}</span>{h.get("title_kr", h["title"])}</a></li>'
         for h in headlines
     )
     return f'<ul class="issue-list">{items}</ul>'
+
+
+def load_accuracy(path: str = "data/accuracy.json") -> dict:
+    if not os.path.exists(path):
+        return {}
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
 
 
 def safe_name(ticker: str) -> str:
@@ -100,7 +110,10 @@ def render(prediction: dict, stats: dict, universe: dict) -> str:
         "{{DOWN_COUNT}}": str(len(universe.get("down", []))),
         "{{UP_ROWS}}": render_rows(universe.get("up", [])),
         "{{DOWN_ROWS}}": render_rows(universe.get("down", [])),
-        "{{ISSUE_LIST}}": render_issues(load_issues()),
+        "{{ISSUE_COUNT}}": str(len(load_issues())),
+        "{{ACCURACY_BADGE}}": (
+            f"{accuracy['accuracy_pct']}%" if (accuracy := load_accuracy()).get("accuracy_pct") is not None else "집계 전"
+        ),
     }
     for key, value in replacements.items():
         template = template.replace(key, str(value))

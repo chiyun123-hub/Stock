@@ -52,6 +52,18 @@
     border: 1px solid var(--accent); border-radius: 4px; padding: 1px 5px; margin-right: 6px;
   }
   .issue-empty { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .sidebar-nav { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+  .sidebar-nav-item {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; font-size: 13px; font-weight: 600; color: var(--text);
+    text-decoration: none; transition: border-color 0.15s;
+  }
+  .sidebar-nav-item:hover { border-color: var(--accent); }
+  .nav-badge {
+    font-size: 11px; font-weight: 700; color: var(--muted);
+    background: #0e141b; border-radius: 10px; padding: 2px 8px;
+  }
   .sidebar-stat { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
   .sidebar-stat-label { font-size: 11px; color: var(--muted); }
   .sidebar-stat-value { font-size: 15px; font-weight: 700; margin-top: 2px; }
@@ -120,8 +132,17 @@
     <div class="brand">📈 주식 예측 대시보드</div>
     <div class="brand-sub">{{DATE}} 기준 · AI 스크리닝</div>
 
-    <div class="sidebar-title">오늘의 이슈</div>
-    {{ISSUE_LIST}}
+    <div class="sidebar-title">메뉴</div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="issues.html">
+        <span>📰 오늘의 이슈</span>
+        <span class="nav-badge">{{ISSUE_COUNT}}</span>
+      </a>
+      <a class="sidebar-nav-item" href="accuracy.html">
+        <span>🎯 예측 정확도</span>
+        <span class="nav-badge">{{ACCURACY_BADGE}}</span>
+      </a>
+    </nav>
 
     <div class="sidebar-title">요약</div>
     <div class="sidebar-stat">
