@@ -33,17 +33,21 @@ def load_universe(path: str = "data/predictions_universe.json") -> dict:
         return json.load(f)
 
 
-def load_issues(path: str = "data/today_issues.json") -> list[str]:
+def load_issues(path: str = "data/today_issues.json") -> list[dict]:
     if not os.path.exists(path):
         return []
     with open(path, encoding="utf-8") as f:
         return json.load(f).get("headlines", [])
 
 
-def render_issues(headlines: list[str]) -> str:
+def render_issues(headlines: list[dict]) -> str:
     if not headlines:
         return '<div class="issue-empty">뉴스 소스 요청 제한으로 지금은 표시할 이슈가 없습니다.</div>'
-    items = "\n".join(f'<li class="issue-item">{h}</li>' for h in headlines)
+    items = "\n".join(
+        f'<li class="issue-item"><a href="{h["link"]}" target="_blank" rel="noopener noreferrer">'
+        f'<span class="issue-ticker">{h["ticker"]}</span>{h.get("title_kr", h["title"])}</a></li>'
+        for h in headlines
+    )
     return f'<ul class="issue-list">{items}</ul>'
 
 

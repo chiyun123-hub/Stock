@@ -43,13 +43,22 @@
     font-size: 13px; line-height: 1.5; padding: 10px 0;
     border-bottom: 1px solid var(--border); color: var(--text);
   }
+  .issue-item a {
+    color: var(--text); text-decoration: none; display: block;
+  }
+  .issue-item a:hover { color: var(--accent); }
+  .issue-ticker {
+    display: inline-block; font-size: 10px; font-weight: 700; color: var(--accent);
+    border: 1px solid var(--accent); border-radius: 4px; padding: 1px 5px; margin-right: 6px;
+  }
   .issue-empty { font-size: 13px; color: var(--muted); line-height: 1.6; }
   .sidebar-stat { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
   .sidebar-stat-label { font-size: 11px; color: var(--muted); }
   .sidebar-stat-value { font-size: 15px; font-weight: 700; margin-top: 2px; }
 
   /* Main */
-  .main { flex: 1; padding: 40px 32px 60px; max-width: 900px; }
+  .main { flex: 1; display: flex; justify-content: center; padding: 40px 32px 60px; }
+  .main-inner { width: 100%; max-width: 900px; }
 
   .card {
     max-width: 420px;
@@ -126,6 +135,7 @@
   </div>
 
   <div class="main">
+   <div class="main-inner">
     <div class="card">
       <div class="ticker-row">
         <a class="ticker" href="{{TICKER_HREF}}" style="color:inherit;text-decoration:none;">{{TICKER}}</a>
@@ -174,6 +184,7 @@
     </div>
 
     <div class="disclaimer">스크리닝 결과는 20일 이동평균·최근 5일 수익률 기반 추세 판단이며, 투자 자문이 아닙니다.</div>
+   </div>
   </div>
 
 </div>

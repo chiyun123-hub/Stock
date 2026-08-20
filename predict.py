@@ -16,24 +16,48 @@ from dotenv import load_dotenv
 
 from analyzer import load_data, calculate_sma
 
-NEWS_RSS_URL = "https://feeds.finance.yahoo.com/rss/2.0/headline"
+NEWS_RSS_URL = "https://news.google.com/rss/search"
+
+
+def _google_news_items(query: str) -> list:
+    """Query Google News RSS (Korean locale) — no API key, far less rate limited
+    than the Yahoo Finance RSS feed we used previously."""
+    resp = requests.get(NEWS_RSS_URL, params={"q": query, "hl": "ko", "gl": "KR", "ceid": "KR:ko"})
+    resp.raise_for_status()
+    root = ET.fromstring(resp.text)
+    return list(root.iter("item"))
 
 
 def fetch_news(ticker: str, limit: int = 10) -> list[str]:
-    """Fetch latest headlines for a ticker via Yahoo Finance RSS (no API key needed).
+    """Fetch latest headlines for a ticker via Google News RSS (no API key needed).
 
     Returns an empty list on rate limiting / network failure so the pipeline
     can still produce a trend-only prediction instead of crashing.
     """
     try:
-        resp = requests.get(NEWS_RSS_URL, params={"s": ticker, "region": "US", "lang": "en-US"})
-        resp.raise_for_status()
+        items = _google_news_items(f"{ticker} stock")
     except requests.exceptions.RequestException as e:
         print(f"News fetch failed ({e}); continuing without headlines.")
         return []
-    root = ET.fromstring(resp.text)
-    titles = [item.findtext("title") for item in root.iter("item")]
+    titles = [item.findtext("title") for item in items]
     return [t for t in titles if t][:limit]
+
+
+def fetch_news_with_links(ticker: str, name: str = "", limit: int = 3) -> list[dict]:
+    """Like fetch_news, but keeps each headline's article URL for click-through."""
+    query = f"{name or ticker} 주식"
+    try:
+        items = _google_news_items(query)
+    except requests.exceptions.RequestException as e:
+        print(f"News fetch failed for {ticker} ({e}); skipping.")
+        return []
+    results = []
+    for item in items:
+        title = item.findtext("title")
+        link = item.findtext("link")
+        if title and link:
+            results.append({"title": title, "link": link, "ticker": ticker})
+    return results[:limit]
 
 
 def summarize_trend(df: pd.DataFrame, window: int = 20) -> str:
@@ -75,6 +99,29 @@ def call_gemini(prompt: str) -> dict:
     decision = lines[0].strip().upper() if lines else "UNKNOWN"
     reasoning = lines[1].strip() if len(lines) > 1 else ""
     return {"decision": decision, "reasoning": reasoning}
+
+
+def translate_titles_to_korean(titles: list[str]) -> list[str]:
+    """Batch-translate headlines to Korean in a single Gemini call (keeps order)."""
+    if not titles:
+        return []
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+    model = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
+    numbered = "\n".join(f"{i + 1}. {t}" for i, t in enumerate(titles))
+    prompt = (
+        "Translate each numbered news headline below into natural Korean. "
+        "Reply with exactly the same numbering, one translated headline per line, "
+        "no extra commentary.\n\n" + numbered
+    )
+    response = client.models.generate_content(model=model, contents=prompt)
+    lines = [line.strip() for line in (response.text or "").splitlines() if line.strip()]
+    translated = []
+    for line in lines:
+        text = line.split(".", 1)[1].strip() if "." in line[:4] else line
+        translated.append(text)
+    if len(translated) != len(titles):
+        return titles  # fall back to originals if parsing mismatched
+    return translated
 
 
 def save_prediction(result: dict, path: str = "data/prediction_today.json") -> None:
