@@ -6,7 +6,7 @@ import os
 from datetime import date
 
 from analyzer import load_data, calculate_sma
-from chart import line_chart_svg, period_return
+from chart import interactive_chart_html, naive_predicted_price, period_return
 
 BASE_DIR = os.path.dirname(__file__)
 TEMPLATE_PATH = os.path.join(BASE_DIR, "stock_template.html")
@@ -45,7 +45,10 @@ def build_page(item: dict) -> str:
     if csv_path:
         df = calculate_sma(load_data(csv_path), window=20)
         close = df["Close"]
-        chart_svg = line_chart_svg(close, color, currency=currency)
+        predicted_price = naive_predicted_price(close)
+        chart_svg = interactive_chart_html(
+            close, currency, color, chart_id=safe_name(ticker), predicted_price=predicted_price
+        )
         latest_close = float(close.iloc[-1])
         sma_20 = float(df["SMA_20"].iloc[-1])
         change_5d = (close.iloc[-1] / close.iloc[-6] - 1) * 100 if len(close) > 6 else float("nan")
@@ -54,6 +57,9 @@ def build_page(item: dict) -> str:
         change_3m = fmt_pct(period_return(close, 63))
         change_6m = fmt_pct(period_return(close, 126))
         change_1y = fmt_pct(period_return(close, 252))
+        predicted_price_text = f"{currency}{predicted_price:,.2f}"
+        predicted_change = (predicted_price / latest_close - 1) * 100
+        predicted_change_text = fmt_pct(predicted_change)
     else:
         chart_svg = '<div class="chart-empty">차트를 그릴 데이터가 없습니다.</div>'
         latest_close = item.get("latest_close", 0)
@@ -61,6 +67,8 @@ def build_page(item: dict) -> str:
         change_5d = float("nan")
         range_text = "N/A"
         change_1m = change_3m = change_6m = change_1y = "N/A"
+        predicted_price_text = "N/A"
+        predicted_change_text = "N/A"
 
     with open(TEMPLATE_PATH, encoding="utf-8") as f:
         template = f.read()
@@ -84,6 +92,8 @@ def build_page(item: dict) -> str:
         "{{CHANGE_3M}}": change_3m,
         "{{CHANGE_6M}}": change_6m,
         "{{CHANGE_1Y}}": change_1y,
+        "{{PREDICTED_PRICE}}": predicted_price_text,
+        "{{PREDICTED_CHANGE}}": predicted_change_text,
     }
     for key, value in replacements.items():
         template = template.replace(key, str(value))
