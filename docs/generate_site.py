@@ -5,6 +5,7 @@ from datetime import date
 
 from analyzer import load_data, calculate_sma
 from common import load_sidebar_context, render_page
+from predict_universe import TICKERS as TICKER_INFO
 
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "index.html")
 
@@ -89,10 +90,10 @@ def render_rows(items: list[dict]) -> str:
         return '<div class="stock-reason">데이터 없음</div>'
     rows = []
     for i, item in enumerate(items, 1):
-        name = item.get("name", "")
+        name = item.get("name") or item["ticker"]
         market = item.get("market", "US")
         currency = item.get("currency", "$")
-        label = f'{item["ticker"]}{f" · {name}" if name else ""}'
+        label = name
         href = f"stocks/{safe_name(item['ticker'])}.html"
         rows.append(
             f'<a class="stock-row" href="{href}">'
@@ -112,7 +113,7 @@ def render_content(prediction: dict, stats: dict, universe: dict) -> str:
     ticker_href = f"stocks/{safe_name(prediction['ticker'])}.html"
     return f'''<div class="card">
       <div class="ticker-row">
-        <a class="ticker" href="{ticker_href}" style="color:inherit;text-decoration:none;">{prediction["ticker"]}</a>
+        <a class="ticker" href="{ticker_href}" style="color:inherit;text-decoration:none;">{TICKER_INFO.get(prediction["ticker"], (prediction["ticker"],))[0]}</a>
         <div class="date">{prediction.get("date", date.today().isoformat())}</div>
       </div>
       <div class="decision-badge {"up" if is_up else "down"}">

@@ -12,7 +12,7 @@ os.environ.setdefault("REQUESTS_CA_BUNDLE", os.environ["SSL_CERT_FILE"])
 
 from dotenv import load_dotenv
 
-from predict import fetch_news_with_links, translate_titles_to_korean
+from predict import fetch_news_with_links, summarize_headlines_ko, translate_titles_to_korean
 
 CACHE_PATH = "data/today_issues.json"
 HEADLINES_PER_TICKER = 2
@@ -50,6 +50,10 @@ def fetch_and_cache(force: bool = False) -> dict:
     titles_kr = translate_titles_to_korean([it["title"] for it in items])
     for item, title_kr in zip(items, titles_kr):
         item["title_kr"] = title_kr
+
+    summaries = summarize_headlines_ko(titles_kr, max_chars=300)
+    for item, summary in zip(items, summaries):
+        item["summary"] = summary
 
     result = {"date": date.today().isoformat(), "headlines": items}
     os.makedirs("data", exist_ok=True)

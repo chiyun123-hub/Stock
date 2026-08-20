@@ -8,6 +8,7 @@ from datetime import date
 from analyzer import load_data, calculate_sma
 from chart import interactive_chart_html, naive_predicted_price, period_return
 from common import load_sidebar_context, render_page
+from predict_universe import TICKERS as TICKER_INFO
 
 BASE_DIR = os.path.dirname(__file__)
 CONTENT_TEMPLATE_PATH = os.path.join(BASE_DIR, "stock_content_template.html")
@@ -170,7 +171,11 @@ def main() -> None:
     if os.path.exists(featured_path):
         with open(featured_path, encoding="utf-8") as f:
             featured = json.load(f)
-        items.append({"market": "US", "currency": "$", "name": "", **featured})
+        featured_name = TICKER_INFO.get(featured["ticker"], (featured["ticker"], "US", "$"))
+        items.append({
+            "market": featured_name[1], "currency": featured_name[2], "name": featured_name[0],
+            **featured,
+        })
 
     written = 0
     for item in items:

@@ -124,6 +124,33 @@ def translate_titles_to_korean(titles: list[str]) -> list[str]:
     return translated
 
 
+def summarize_headlines_ko(titles: list[str], max_chars: int = 300) -> list[str]:
+    """Batch-produce a <=max_chars Korean summary for each headline (one Gemini call).
+
+    Since we only have the headline text (not the full article), this is a
+    short, plausible-context summary rather than a summary of the full piece.
+    """
+    if not titles:
+        return []
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+    model = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
+    numbered = "\n".join(f"{i + 1}. {t}" for i, t in enumerate(titles))
+    prompt = (
+        "For each numbered news headline below, write a Korean summary of what the "
+        f"news is about, in {max_chars} characters or fewer. Reply with exactly the "
+        "same numbering, one summary per line, no extra commentary.\n\n" + numbered
+    )
+    response = client.models.generate_content(model=model, contents=prompt)
+    lines = [line.strip() for line in (response.text or "").splitlines() if line.strip()]
+    summaries = []
+    for line in lines:
+        text = line.split(".", 1)[1].strip() if "." in line[:4] else line
+        summaries.append(text[:max_chars])
+    if len(summaries) != len(titles):
+        return ["" for _ in titles]  # fall back to empty if parsing mismatched
+    return summaries
+
+
 def save_prediction(result: dict, path: str = "data/prediction_today.json") -> None:
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:

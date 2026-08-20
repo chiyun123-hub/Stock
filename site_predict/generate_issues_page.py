@@ -5,6 +5,11 @@ import json
 import os
 
 from common import load_sidebar_context, render_page
+from predict_universe import TICKERS as TICKER_INFO
+
+
+def display_name(ticker: str) -> str:
+    return TICKER_INFO.get(ticker, (ticker,))[0]
 
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "issues.html")
 
@@ -19,7 +24,8 @@ EXTRA_CSS = """
     display: inline-block; font-size: 11px; font-weight: 700; color: var(--accent);
     border: 1px solid var(--accent); border-radius: 4px; padding: 2px 6px; margin-right: 8px;
   }
-  .news-title { font-size: 14px; line-height: 1.5; }
+  .news-title { font-size: 14px; line-height: 1.5; font-weight: 600; margin-bottom: 6px; }
+  .news-summary { font-size: 12px; color: var(--muted); line-height: 1.5; }
   .empty { color: var(--muted); font-size: 14px; text-align: center; padding: 60px 0; }
 """
 
@@ -36,9 +42,12 @@ def render_list(headlines: list[dict]) -> str:
         return '<div class="empty">지금은 표시할 뉴스가 없습니다. 잠시 후 다시 시도해주세요.</div>'
     items = "\n".join(
         '<li class="news-item"><a href="{link}" target="_blank" rel="noopener noreferrer">'
-        '<span class="news-ticker">{ticker}</span>'
-        '<span class="news-title">{title}</span></a></li>'.format(
-            link=h["link"], ticker=h["ticker"], title=h.get("title_kr", h["title"])
+        '<div class="news-title"><span class="news-ticker">{name}</span>{title}</div>'
+        '{summary}</a></li>'.format(
+            link=h["link"],
+            name=display_name(h["ticker"]),
+            title=h.get("title_kr", h["title"]),
+            summary=f'<div class="news-summary">{h["summary"]}</div>' if h.get("summary") else "",
         )
         for h in headlines
     )

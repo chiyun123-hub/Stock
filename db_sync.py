@@ -62,6 +62,7 @@ def sync_universe(path: str = "data/predictions_universe.json") -> int:
 
     today = date.today().isoformat()
     now = datetime.utcnow().isoformat()
+    tickers_today = [item["ticker"] for item in universe.get("up", []) + universe.get("down", [])]
     rows = [
         {
             "date": today,
@@ -74,6 +75,11 @@ def sync_universe(path: str = "data/predictions_universe.json") -> int:
     ]
     if not rows:
         return 0
+
+    # Drop stale rows from an earlier run today whose ticker set has since
+    # changed (e.g. the universe list was expanded) so today's date always
+    # reflects only the latest screening, not leftovers from prior runs.
+    client.table("predictions").delete().eq("date", today).not_.in_("ticker", tickers_today).execute()
 
     client.table("predictions").upsert(rows, on_conflict="date,ticker").execute()
     print(f"Synced {len(rows)} universe predictions to Supabase.")

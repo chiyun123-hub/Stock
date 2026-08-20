@@ -19,12 +19,22 @@ from analyzer import load_data, calculate_sma
 from predict import summarize_trend, call_gemini
 
 # ticker -> (display name, market, currency symbol)
+# Names use plain, readable casing (e.g. "Nvidia" not "NVDA"/"NVIDIA") since
+# these are shown to users instead of raw ticker codes.
 US_TICKERS = {
     "AAPL": ("Apple", "US", "$"), "MSFT": ("Microsoft", "US", "$"),
     "GOOGL": ("Alphabet", "US", "$"), "AMZN": ("Amazon", "US", "$"),
-    "NVDA": ("NVIDIA", "US", "$"), "META": ("Meta", "US", "$"),
+    "NVDA": ("Nvidia", "US", "$"), "META": ("Meta", "US", "$"),
     "TSLA": ("Tesla", "US", "$"), "JPM": ("JPMorgan", "US", "$"),
     "V": ("Visa", "US", "$"), "WMT": ("Walmart", "US", "$"),
+    "UNH": ("UnitedHealth", "US", "$"), "XOM": ("Exxon Mobil", "US", "$"),
+    "JNJ": ("Johnson & Johnson", "US", "$"), "PG": ("Procter & Gamble", "US", "$"),
+    "MA": ("Mastercard", "US", "$"), "HD": ("Home Depot", "US", "$"),
+    "CVX": ("Chevron", "US", "$"), "ABBV": ("AbbVie", "US", "$"),
+    "KO": ("Coca-Cola", "US", "$"), "PEP": ("PepsiCo", "US", "$"),
+    "NFLX": ("Netflix", "US", "$"), "DIS": ("Disney", "US", "$"),
+    "INTC": ("Intel", "US", "$"), "AMD": ("AMD", "US", "$"),
+    "BA": ("Boeing", "US", "$"), "NKE": ("Nike", "US", "$"),
 }
 KR_TICKERS = {
     "005930.KS": ("삼성전자", "KR", "₩"), "000660.KS": ("SK하이닉스", "KR", "₩"),
@@ -32,6 +42,11 @@ KR_TICKERS = {
     "051910.KS": ("LG화학", "KR", "₩"), "006400.KS": ("삼성SDI", "KR", "₩"),
     "207940.KS": ("삼성바이오로직스", "KR", "₩"), "005380.KS": ("현대차", "KR", "₩"),
     "000270.KS": ("기아", "KR", "₩"), "105560.KS": ("KB금융", "KR", "₩"),
+    "055550.KS": ("신한지주", "KR", "₩"), "012330.KS": ("현대모비스", "KR", "₩"),
+    "096770.KS": ("SK이노베이션", "KR", "₩"), "066570.KS": ("LG전자", "KR", "₩"),
+    "003670.KS": ("포스코퓨처엠", "KR", "₩"), "086790.KS": ("하나금융지주", "KR", "₩"),
+    "015760.KS": ("한국전력", "KR", "₩"), "032830.KS": ("삼성생명", "KR", "₩"),
+    "009150.KS": ("삼성전기", "KR", "₩"), "047050.KS": ("포스코인터내셔널", "KR", "₩"),
 }
 TICKERS = {**US_TICKERS, **KR_TICKERS}
 

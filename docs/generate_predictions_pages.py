@@ -13,6 +13,11 @@ from supabase import create_client
 
 from check_accuracy import actual_direction
 from common import load_sidebar_context, render_page
+from predict_universe import TICKERS as TICKER_INFO
+
+
+def display_name(ticker: str) -> str:
+    return TICKER_INFO.get(ticker, (ticker,))[0]
 
 BASE_DIR = os.path.dirname(__file__)
 LIST_OUTPUT = os.path.join(BASE_DIR, "predictions.html")
@@ -123,7 +128,7 @@ def render_detail_page(d: str, rows: list[dict], ctx: dict) -> None:
             pct_text = f'{r["change_pct"]:+.2f}%'
         stock_link = f"stocks/{safe_name(r['ticker'])}.html"
         body_rows.append(
-            f'<tr><td><a href="{stock_link}">{r["ticker"]}</a></td>'
+            f'<tr><td><a href="{stock_link}">{display_name(r["ticker"])}</a></td>'
             f'<td>{badge(r["prediction"])}</td><td>{actual_badge}</td>'
             f'<td>{pct_text}</td><td>{result}</td>'
             f'<td class="reason-cell">{r.get("reason") or ""}</td></tr>'
