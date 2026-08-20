@@ -51,6 +51,10 @@
   .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .stat { background: #0e141b; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
   .stat-label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .period-title { font-size: 12px; color: var(--muted); margin: 20px 0 8px; }
+  .period-stats { grid-template-columns: repeat(4, 1fr); margin-bottom: 20px; }
+  .pct-up { color: var(--up); }
+  .pct-down { color: var(--down); }
   .stat-value { font-size: 16px; font-weight: 600; margin-top: 4px; }
   .disclaimer { font-size: 11px; color: var(--muted); text-align: center; line-height: 1.5; }
 </style>
@@ -93,6 +97,26 @@
       <div class="stat">
         <div class="stat-label">기간 범위</div>
         <div class="stat-value">{{CURRENCY}}{{RANGE}}</div>
+      </div>
+    </div>
+
+    <div class="period-title">구간별 변동률</div>
+    <div class="stats period-stats">
+      <div class="stat">
+        <div class="stat-label">1개월</div>
+        <div class="stat-value">{{CHANGE_1M}}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">3개월</div>
+        <div class="stat-value">{{CHANGE_3M}}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">6개월</div>
+        <div class="stat-value">{{CHANGE_6M}}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">1년</div>
+        <div class="stat-value">{{CHANGE_1Y}}</div>
       </div>
     </div>
   </div>
